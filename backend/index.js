@@ -1,8 +1,6 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 
-const num = 1;
-
 const typeDefs = `
   type Query {
     info: String!
@@ -23,5 +21,3 @@ const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 },
 });
 console.log(`🚀  Server ready at: ${url}`);
-
-//Sever
