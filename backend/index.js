@@ -1,16 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-
-const typeDefs = `
-  type Query {
-    info: String!
-  }
-`;
-const resolvers = {
-  Query: {
-    info: () => `This is the API of a Hackernews Clone`,
-  },
-};
+import { typeDefs } from "./graphql/schema.js";
+import { resolvers } from "./graphql/resolvers.js";
 
 const server = new ApolloServer({
   typeDefs,
