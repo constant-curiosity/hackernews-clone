@@ -3,13 +3,13 @@ import { typeDefs } from "./graphql/schema.js";
 import { resolvers } from "./graphql/resolvers.js";
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: {
-    prisma,
+    prisma: new PrismaClient(),
   },
 });
 
