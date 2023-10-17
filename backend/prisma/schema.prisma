@@ -4,9 +4,11 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+
 generator client {
   provider = "prisma-client-js"
 }
+
 
 model Link {
   id          Int      @id @default(autoincrement())
@@ -14,4 +16,3 @@ model Link {
   description String
   url         String
 }
-

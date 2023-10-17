@@ -1,14 +1,18 @@
-import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
+import { ApolloServer } from "apollo-server";
 import { typeDefs } from "./graphql/schema.js";
 import { resolvers } from "./graphql/resolvers.js";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: {
+    prisma,
+  },
 });
 
-const { url } = await startStandaloneServer(server, {
-  listen: { port: 4000 },
+server.listen({ port: 4000 }).then(({ url }) => {
+  console.log(`🚀  Server ready at: ${url}`);
 });
-console.log(`🚀  Server ready at: ${url}`);
