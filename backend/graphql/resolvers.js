@@ -7,7 +7,7 @@ export const resolvers = {
     link: async (_, args, context) => {
       const { id } = args;
       const link = await context.prisma.link.findUnique({
-        where: { id },
+        where: { id: parseInt(id) },
       });
       return link;
     },
@@ -25,7 +25,7 @@ export const resolvers = {
     updateLink: async (_, args, context) => {
       const { id, url, description } = args;
       const updatedLink = await context.prisma.link.update({
-        where: { id },
+        where: { id: parseInt(id) },
         data: { url: url || undefined, description: description || undefined },
       });
       return updatedLink;
@@ -33,7 +33,8 @@ export const resolvers = {
     deleteLink: async (_, args, context) => {
       const { id } = args;
       const deletedLink = await context.prisma.link.delete({
-        where: { id },
+        // where: { id },
+        where: { id: parseInt(id) },
       });
       return deletedLink;
     },
