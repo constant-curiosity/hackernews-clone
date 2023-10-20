@@ -30,3 +30,5 @@ const server = new ApolloServer({
 server.listen({ port: 4000 }).then(({ url }) => {
   console.log(`🚀  Server ready at: ${url}`);
 });
+
+const test = async () => {};
