@@ -1,4 +1,4 @@
-export const feed = async (_, args, context) => {
+export const feed = async (_, __, context) => {
   return context.prisma.link.findMany();
 };
 
