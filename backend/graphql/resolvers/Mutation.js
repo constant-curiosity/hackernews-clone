@@ -1,8 +1,8 @@
-import { bcrypt } from "bcryptjs";
-import { jwt } from "jsonwebtoken";
-import { APP_SECRET, getUserId } from "../../util/utils";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-export const signup = async (parent, args, context, info) => {
+import APP_SECRET from "../../util/authUtils.js";
+export const signup = async (_, args, context, ____) => {
   const password = await bcrypt.hash(args.password, 10);
   const user = await context.prisma.user.create({
     data: { ...args, password },
@@ -14,7 +14,7 @@ export const signup = async (parent, args, context, info) => {
   };
 };
 
-export const login = async (parent, args, context, info) => {
+export const login = async (_, args, context, ____) => {
   const user = await context.prisma.user.findUnique({
     where: { email: args.email },
   });

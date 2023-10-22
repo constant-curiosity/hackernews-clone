@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken";
+export const APP_SECRET = "GraphQL-is-aw3some";
 
-const APP_SECRET = "GraphQL-is-aw3some";
+function getTokenPayload(token) {
+  return jwt.verify(token, APP_SECRET);
+}
 
-export const getTokenPayload = (token) => jwt.verify(token, APP_SECRET);
-
-const getUserId = (req, authToken) => {
+export const getUserId = (req, authToken) => {
   if (req) {
     const authHeader = req.headers.authorization;
     if (authHeader) {
@@ -23,4 +24,7 @@ const getUserId = (req, authToken) => {
   throw new Error("Not authenticated");
 };
 
-export { APP_SECRET, getUserId };
+export default {
+  APP_SECRET,
+  getUserId,
+};
