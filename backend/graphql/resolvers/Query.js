@@ -1,14 +1,7 @@
-// export const feed = async (_, __, context) => {
-//   return context.prisma.link.findMany();
-// };
-
-// export default {
-//   feed,
-// };
-
-function feed(_, __, context) {
-  return context.prisma.link.findMany();
-}
+export const feed = async (_, __, context) => {
+  const links = await context.prisma.link.findMany();
+  return links;
+};
 
 export default {
   feed,

@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { APP_SECRET } from "../../util/authUtils.js";
 
-import APP_SECRET from "../../util/authUtils.js";
 export const signup = async (_, args, context, ____) => {
   const password = await bcrypt.hash(args.password, 10);
   const user = await context.prisma.user.create({
