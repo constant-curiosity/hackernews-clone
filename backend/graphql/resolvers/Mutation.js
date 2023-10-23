@@ -34,6 +34,7 @@ export const login = async (_, args, context, ____) => {
 
 export const post = async (_, args, context, ____) => {
   const { userId } = context;
+  console.log(userId);
   return await context.prisma.link.create({
     data: {
       url: args.url,
