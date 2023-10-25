@@ -11,6 +11,7 @@ import Subscription from "./graphql/resolvers/Subscription.js";
 const resolvers = {
   Query,
   Mutation,
+  Subscription,
   User,
   Link,
 };
