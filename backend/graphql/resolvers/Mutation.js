@@ -41,6 +41,7 @@ export const post = async (_, args, context, ____) => {
       postedBy: { connect: { id: userId } },
     },
   });
+  console.log("New Link Created:", newLink); //Added by me
   await context.pubsub.publish("NEW_LINK", { newLink });
   return newLink;
 };
