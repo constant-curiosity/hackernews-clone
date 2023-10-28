@@ -32,19 +32,6 @@ export const login = async (_, args, context, ____) => {
   };
 };
 
-// export const post = async (_, args, context, ____) => {
-//   const { userId } = context;
-//   const newLink = await context.prisma.link.create({
-//     data: {
-//       url: args.url,
-//       description: args.description,
-//       postedBy: { connect: { id: userId } },
-//     },
-//   });
-//   await context.pubsub.publish("NEW_LINK", { newLink });
-//   return newLink;
-// };
-
 export const post = async (_, args, context, ____) => {
   const { userId } = context;
   const newLink = await context.prisma.link.create({
