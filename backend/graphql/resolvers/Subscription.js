@@ -1,10 +1,24 @@
-export const newLink = {
-  subscribe: (_, __, context) => {
-    // return context.pubsub.asyncIterator("NEW_LINK"); //original
-    return context.pubsub.asyncIterator("NEW_LINK");
-  },
+// export const newLink = {
+//   subscribe: (_, __, context) => {
+//     return context.pubsub.asyncIterator("NEW_LINK");
+//   },
+//   resolve: (payload) => {
+//     console.log("Subscription Payload:", payload); // Added by me
+//     return payload.newLink;
+//   },
+// };
+
+// export default {
+//   newLink,
+// };
+
+function newLinkSubscribe(parent, args, context, info) {
+  return context.pubsub.asyncIterator("NEW_LINK");
+}
+
+const newLink = {
+  subscribe: newLinkSubscribe,
   resolve: (payload) => {
-    console.log("Subscription Payload:", payload); // Added by me
     return payload.newLink;
   },
 };

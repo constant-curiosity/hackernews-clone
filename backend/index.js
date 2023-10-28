@@ -1,12 +1,12 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import http from "http";
+import express from "express";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { WebSocketServer } from "ws";
 import { useServer } from "graphql-ws/lib/use/ws";
 import { PubSub } from "graphql-subscriptions";
-import http from "http";
-import express from "express";
 import cors from "cors";
 import { typeDefs } from "./graphql/schema.js";
 import { PrismaClient } from "@prisma/client";
@@ -16,8 +16,10 @@ import Mutation from "./graphql/resolvers/Mutation.js";
 import User from "./graphql/resolvers/User.js";
 import Link from "./graphql/resolvers/Link.js";
 import Subscription from "./graphql/resolvers/Subscription.js";
+
 const app = express();
 const httpServer = http.createServer(app);
+
 const resolvers = {
   Query,
   Mutation,
@@ -25,6 +27,7 @@ const resolvers = {
   User,
   Link,
 };
+
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 const wsServer = new WebSocketServer({
   server: httpServer,
@@ -42,7 +45,7 @@ const server = new ApolloServer({
       async serverWillStart() {
         return {
           async drainServer() {
-            serverCleanup();
+            serverCleanup.dispose();
           },
         };
       },
