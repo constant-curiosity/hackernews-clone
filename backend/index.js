@@ -1,13 +1,13 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
-import http from "http";
+import { createServer } from "http";
 import express from "express";
+import cors from "cors";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { WebSocketServer } from "ws";
 import { useServer } from "graphql-ws/lib/use/ws";
 import { PubSub } from "graphql-subscriptions";
-import cors from "cors";
 import { typeDefs } from "./graphql/schema.js";
 import { PrismaClient } from "@prisma/client";
 import { getUserId } from "./util/authUtils.js";
@@ -15,29 +15,36 @@ import Query from "./graphql/resolvers/Query.js";
 import Mutation from "./graphql/resolvers/Mutation.js";
 import User from "./graphql/resolvers/User.js";
 import Link from "./graphql/resolvers/Link.js";
-import Subscription from "./graphql/resolvers/Subscription.js";
+// import Subscription from "./graphql/resolvers/Subscription.js";
+import subscriptionResolvers from "./graphql/resolvers/Subscription.js";
 
+const port = 4000;
 const app = express();
-const httpServer = http.createServer(app);
+const httpServer = createServer(app);
 
 const resolvers = {
   Query,
   Mutation,
-  Subscription,
+  // subscriptionResolvers,
+  // Subscription,
   User,
   Link,
 };
 
-const schema = makeExecutableSchema({ typeDefs, resolvers });
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers: [resolvers, subscriptionResolvers],
+});
+
 const wsServer = new WebSocketServer({
   server: httpServer,
-  path: "/subscriptions",
+  path: "/graphql",
 });
-const serverCleanup = useServer({ schema }, wsServer);
+const wsServerCleanup = useServer({ schema }, wsServer);
 
 const pubsub = new PubSub();
 const prisma = new PrismaClient();
-const server = new ApolloServer({
+const apolloServer = new ApolloServer({
   schema,
   plugins: [
     ApolloServerPluginDrainHttpServer({ httpServer }),
@@ -45,30 +52,35 @@ const server = new ApolloServer({
       async serverWillStart() {
         return {
           async drainServer() {
-            serverCleanup.dispose();
+            await wsServerCleanup.dispose();
           },
         };
       },
     },
   ],
 });
-await server.start();
+await apolloServer.start();
 
 app.use(
-  "/",
+  "/graphql",
   cors(),
   express.json(),
-  expressMiddleware(server, {
+  expressMiddleware(apolloServer, {
     context: async ({ req }) => {
       return {
-        ...req,
+        req,
         prisma,
         pubsub,
         userId: req && req.headers.authorization ? getUserId(req) : null,
       };
     },
+    introspection: true,
   })
 );
 
-await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
-console.log(`🚀 Server ready at http://localhost:4000/`);
+httpServer.listen(port, () => {
+  console.log(`🚀 Query endpoint ready at http://localhost:${port}/graphql`);
+  console.log(
+    `🚀 Subscription endpoint ready at ws://localhost:${port}/graphql`
+  );
+});
