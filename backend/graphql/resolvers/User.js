@@ -1,5 +1,7 @@
-export const links = async (parent, __, context) => {
-  return context.prisma.user.findUnique({ where: { id: parent.id } }).links();
+export const links = async (parent, __, contextValue) => {
+  return contextValue.prisma.user
+    .findUnique({ where: { id: parent.id } })
+    .links();
 };
 
 export default {

@@ -2,9 +2,9 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { APP_SECRET } from "../../util/authUtils.js";
 
-export const signup = async (_, args, context, ____) => {
+export const signup = async (_, args, contextValue, ____) => {
   const password = await bcrypt.hash(args.password, 10);
-  const user = await context.prisma.user.create({
+  const user = await contextValue.prisma.user.create({
     data: { ...args, password },
   });
   const token = jwt.sign({ userId: user.id }, APP_SECRET);
@@ -14,8 +14,8 @@ export const signup = async (_, args, context, ____) => {
   };
 };
 
-export const login = async (_, args, context, ____) => {
-  const user = await context.prisma.user.findUnique({
+export const login = async (_, args, contextValue, ____) => {
+  const user = await contextValue.prisma.user.findUnique({
     where: { email: args.email },
   });
   if (!user) {
@@ -50,7 +50,6 @@ export const post = async (
   { url, description },
   { prisma, pubsub, userId }
 ) => {
-  console.log("PubSub:", pubsub);
   const newLink = await prisma.link.create({
     data: {
       url,
@@ -61,6 +60,17 @@ export const post = async (
   await pubsub.publish("NEW_LINK", { newLink });
   return newLink;
 };
+
+// export const vote = async (_, args, contextValue, ____) => {
+//   const { userId } = contextValue;
+//   const vote = await contextValue.prisma.vote.findUnique({
+//     where: {
+//       linkId_userId: {
+//         linkId: Number(args.linkId),
+//         userId: userId,
+//       },
+//     },
+//   });
 
 export default {
   signup,

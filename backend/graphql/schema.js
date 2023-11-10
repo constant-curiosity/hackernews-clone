@@ -10,12 +10,14 @@ export const typeDefs = `#graphql
     deleteLink(id: ID!): Link
     signup(email: String!, password: String!, name: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
+    vote(linkId: ID!): Vote
   }
   type Link {
     id: ID!
     description: String!
     url: String!
     postedBy: User
+    votes: [Vote!]!
   }
   type AuthPayload {
   token: String
@@ -29,5 +31,10 @@ type User {
 }
 type Subscription {
   newLink: Link
+}
+type Vote {
+  id: ID!
+  link: Link!
+  user: User!
 }
 `;

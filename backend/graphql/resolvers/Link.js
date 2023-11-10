@@ -1,5 +1,5 @@
-export const postedBy = async (parent, __, context) => {
-  return context.prisma.link
+export const postedBy = async (parent, __, contextValue) => {
+  return contextValue.prisma.link
     .findUnique({ where: { id: parent.id } })
     .postedBy();
 };
