@@ -7,7 +7,7 @@ import cors from "cors";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { WebSocketServer } from "ws";
 import { useServer } from "graphql-ws/lib/use/ws";
-import { PubSub } from "graphql-subscriptions";
+// import { PubSub } from "graphql-subscriptions";
 import { typeDefs } from "./graphql/schema.js";
 import { PrismaClient } from "@prisma/client";
 import { getUserId } from "./util/authUtils.js";
@@ -15,7 +15,6 @@ import Query from "./graphql/resolvers/Query.js";
 import Mutation from "./graphql/resolvers/Mutation.js";
 import User from "./graphql/resolvers/User.js";
 import Link from "./graphql/resolvers/Link.js";
-// import Subscription from "./graphql/resolvers/Subscription.js";
 import subscriptionResolvers from "./graphql/resolvers/Subscription.js";
 
 const port = 4000;
@@ -25,15 +24,14 @@ const httpServer = createServer(app);
 const resolvers = {
   Query,
   Mutation,
-  // subscriptionResolvers,
-  // Subscription,
+  Subscription: subscriptionResolvers,
   User,
   Link,
 };
 
 const schema = makeExecutableSchema({
   typeDefs,
-  resolvers: [resolvers, subscriptionResolvers],
+  resolvers: resolvers,
 });
 
 const wsServer = new WebSocketServer({
@@ -42,7 +40,7 @@ const wsServer = new WebSocketServer({
 });
 const wsServerCleanup = useServer({ schema }, wsServer);
 
-const pubsub = new PubSub();
+// const pubsub = new PubSub();
 const prisma = new PrismaClient();
 const apolloServer = new ApolloServer({
   schema,
@@ -70,7 +68,7 @@ app.use(
       return {
         req,
         prisma,
-        pubsub,
+        // pubsub,
         userId: req && req.headers.authorization ? getUserId(req) : null,
       };
     },

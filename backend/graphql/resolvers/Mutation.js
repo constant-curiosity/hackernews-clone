@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { APP_SECRET } from "../../util/authUtils.js";
+import { pubsub } from "./pubsub.js";
 
 export const signup = async (_, args, contextValue, ____) => {
   const password = await bcrypt.hash(args.password, 10);
@@ -32,34 +33,34 @@ export const login = async (_, args, contextValue, ____) => {
   };
 };
 
-// export const post = async (_, args, contextValue, ____) => {
-//   const { userId } = contextValue;
-//   const newLink = await contextValue.prisma.link.create({
-//     data: {
-//       url: args.url,
-//       description: args.description,
-//       postedBy: { connect: { id: userId } },
-//     },
-//   });
-//   await contextValue.pubsub.publish("NEW_LINK", { newLink });
-//   return newLink;
-// };
-
-export const post = async (
-  _,
-  { url, description },
-  { prisma, pubsub, userId }
-) => {
-  const newLink = await prisma.link.create({
+export const post = async (_, args, contextValue, ____) => {
+  const { userId } = contextValue;
+  const newLink = await contextValue.prisma.link.create({
     data: {
-      url,
-      description,
+      url: args.url,
+      description: args.description,
       postedBy: { connect: { id: userId } },
     },
   });
   await pubsub.publish("NEW_LINK", { newLink });
   return newLink;
 };
+
+// export const post = async (
+//   _,
+//   { url, description },
+//   { prisma, pubsub, userId }
+// ) => {
+//   const newLink = await prisma.link.create({
+//     data: {
+//       url,
+//       description,
+//       postedBy: { connect: { id: userId } },
+//     },
+//   });
+//   await pubsub.publish("NEW_LINK", { newLink });
+//   return newLink;
+// };
 
 // export const vote = async (_, args, contextValue, ____) => {
 //   const { userId } = contextValue;
