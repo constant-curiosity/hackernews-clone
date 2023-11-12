@@ -1,50 +1,34 @@
-import { pubsub } from "./pubsub.js";
+import { pubsub } from "../../index.js";
 
-export const subscriptionResolvers = {
+const subscriptionResolvers = {
   newLink: {
-    subscribe: () => {
-      console.log("Context:", pubsub);
-      return pubsub.asyncIterator("NEW_LINK");
-    },
+    subscribe: () => pubsub.asyncIterator("NEW_LINK"),
+  },
+  newVote: {
+    subscribe: () => pubsub.asyncIterator("NEW_VOTE"),
   },
 };
 
 export default subscriptionResolvers;
 
-// export const newLink = {
-//   subscribe: (_, __, contextValue) => {
-//     console.log("Context:", contextValue); // Added by me
-//     return contextValue.pubsub.asyncIterator("NEW_LINK");
-//   },
-//   resolve: (payload) => {
-//     console.log("Subscription Payload:", payload); // Added by me
-//     return payload.newLink;
-//   },
-// };
-// export default {
-//   newLink,
-// const subscriptionResolvers = {
-//   // Subscription: {
+// import { pubsub } from "./pubsub.js";
+
+// export const subscriptionLink = {
 //   newLink: {
-//     subscribe: (_, __, { pubsub }) => {
-//       console.log("Context:", { pubsub }); // Added for debugging
+//     subscribe: () => {
 //       return pubsub.asyncIterator("NEW_LINK");
 //     },
-//     resolve: (payload) => {
-//       console.log("Subscription Payload:", payload); // Added for debugging
-//       return payload.newLink;
-//     },
 //   },
-//   // },
 // };
 
-// const subscriptionResolvers = {
-//   Subscription: {
-//     newLink: {
-//       subscribe: (_, __, contextValue) =>
-//         contextValue.pubsub.asyncIterator("NEW_LINK"),
+// export const subscriptionNewVote = {
+//   newVote: {
+//     subscribe: () => {
+//       return pubsub.asyncIterator("NEW_VOTE");
 //     },
 //   },
 // };
 
-// export default subscriptionResolvers;
+// export default { subscriptionLink, subscriptionNewVote };
+
+// _, __, contextValue

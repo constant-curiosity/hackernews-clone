@@ -1,7 +1,7 @@
+import { APP_SECRET } from "../../util/authUtils.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { APP_SECRET } from "../../util/authUtils.js";
-import { pubsub } from "./pubsub.js";
+import { pubsub } from "../../index.js";
 
 export const signup = async (_, args, contextValue, ____) => {
   const password = await bcrypt.hash(args.password, 10);
@@ -46,35 +46,32 @@ export const post = async (_, args, contextValue, ____) => {
   return newLink;
 };
 
-// export const post = async (
-//   _,
-//   { url, description },
-//   { prisma, pubsub, userId }
-// ) => {
-//   const newLink = await prisma.link.create({
-//     data: {
-//       url,
-//       description,
-//       postedBy: { connect: { id: userId } },
-//     },
-//   });
-//   await pubsub.publish("NEW_LINK", { newLink });
-//   return newLink;
-// };
-
-// export const vote = async (_, args, contextValue, ____) => {
-//   const { userId } = contextValue;
-//   const vote = await contextValue.prisma.vote.findUnique({
-//     where: {
-//       linkId_userId: {
-//         linkId: Number(args.linkId),
-//         userId: userId,
-//       },
-//     },
-//   });
+export const vote = async (_, args, contextValue, ____) => {
+  const { userId } = contextValue;
+  const vote = await contextValue.prisma.vote.findUnique({
+    where: {
+      linkId_userId: {
+        linkId: Number(args.linkId),
+        userId: userId,
+      },
+    },
+  });
+  if (!!vote) {
+    throw new Error(`Already voted for link: ${args.linkId}`);
+  }
+  const newVote = await contextValue.prisma.vote.create({
+    data: {
+      user: { connect: { id: userId } },
+      link: { connect: { id: Number(args.linkId) } },
+    },
+  });
+  await pubsub.publish("NEW_VOTE", { newVote });
+  return newVote;
+};
 
 export default {
   signup,
   login,
   post,
+  vote,
 };
