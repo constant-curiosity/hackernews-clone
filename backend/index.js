@@ -18,7 +18,7 @@ import subscriptionResolvers from "./graphql/resolvers/Subscription.js";
 import User from "./graphql/resolvers/User.js";
 import Vote from "./graphql/resolvers/Vote.js";
 export const pubsub = new PubSub();
-export const prisma = new PrismaClient();
+// export const prisma = new PrismaClient();
 const port = 4000;
 const app = express();
 const httpServer = createServer(app);
@@ -43,8 +43,24 @@ const wsServer = new WebSocketServer({
 });
 const wsServerCleanup = useServer({ schema }, wsServer);
 
+// const wsServerCleanup = useServer(
+//   {
+//     schema,
+//     onSubscribe: (ctx, msg) => {
+//       return {
+//         prisma,
+//         pubsub,
+//       };
+//     },
+//     onError: (error, ctx) => {
+//       console.error("Error in WebSocket server:", error);
+//     },
+//   },
+//   wsServer
+// );
+
 // const pubsub = new PubSub();
-// const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 const apolloServer = new ApolloServer({
   schema,
   plugins: [
@@ -70,7 +86,7 @@ app.use(
     context: async ({ req }) => {
       return {
         req,
-        // prisma,
+        prisma,
         // pubsub,
         userId: req && req.headers.authorization ? getUserId(req) : null,
       };

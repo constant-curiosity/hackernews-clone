@@ -65,6 +65,7 @@ export const vote = async (_, args, contextValue, ____) => {
       link: { connect: { id: Number(args.linkId) } },
     },
   });
+  console.log("Mutations:", newVote);
   await pubsub.publish("NEW_VOTE", { newVote });
   return newVote;
 };
