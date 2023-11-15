@@ -1,7 +1,6 @@
 import { APP_SECRET } from "../../util/authUtils.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { pubsub } from "../../index.js";
 
 export const signup = async (_, args, contextValue, ____) => {
   const password = await bcrypt.hash(args.password, 10);
@@ -42,7 +41,7 @@ export const post = async (_, args, contextValue, ____) => {
       postedBy: { connect: { id: userId } },
     },
   });
-  await pubsub.publish("NEW_LINK", { newLink });
+  await contextValue.pubsub.publish("NEW_LINK", { newLink });
   return newLink;
 };
 
@@ -65,8 +64,8 @@ export const vote = async (_, args, contextValue, ____) => {
       link: { connect: { id: Number(args.linkId) } },
     },
   });
-  console.log("Mutations:", newVote);
-  await pubsub.publish("NEW_VOTE", { newVote });
+
+  await contextValue.pubsub.publish("NEW_VOTE", { newVote });
   return newVote;
 };
 

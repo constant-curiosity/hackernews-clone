@@ -1,7 +1,7 @@
 export const typeDefs = `#graphql
   type Query {
     info: String!
-    feed: [Link!]!
+    feed(filter: String!): [Link!]!
     link(id: ID!): Link
   }
   type Mutation {
