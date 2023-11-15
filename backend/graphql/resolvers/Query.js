@@ -1,8 +1,3 @@
-// export const feed = async (_, __, contextValue) => {
-//   const links = await contextValue.prisma.link.findMany();
-//   return links;
-// };
-
 export const feed = async (_, args, contextValue) => {
   const where = args.filter
     ? {
@@ -14,8 +9,12 @@ export const feed = async (_, args, contextValue) => {
     : {};
   const links = await contextValue.prisma.link.findMany({
     where,
+    skip: args.skip,
+    take: args.take,
+    orderBy: args.orderBy,
   });
-  return links;
+  const count = await contextValue.prisma.link.count({ where });
+  return { links, count };
 };
 
 export default {

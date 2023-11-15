@@ -1,8 +1,21 @@
 export const typeDefs = `#graphql
   type Query {
     info: String!
-    feed(filter: String!): [Link!]!
+    feed(filter: String, skip: Int, take: Int, orderBy: LinkOrderByInput): Feed!
     link(id: ID!): Link
+  }
+  input LinkOrderByInput {
+    description: Sort
+    url: Sort
+    createdAt: Sort
+  }
+  enum Sort {
+    asc
+    desc
+  }
+  type Feed {
+    links: [Link!]!
+    count: Int!
   }
   type Mutation {
     post(url: String!, description: String!): Link!
