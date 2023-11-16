@@ -63,51 +63,6 @@ export const post = async (_, args, contextValue, ____) => {
 //   });
 //   return deletedLink;
 // };
-export const deleteLink = async (_, args, contextValue) => {
-  const { id } = args;
-  const { userId } = contextValue;
-
-  if (!userId) {
-    console.log("User Not Logged In");
-    return null;
-  }
-
-  try {
-    const parsedId = parseInt(id);
-    console.log(`Parsed id: ${parsedId}`); // Log the parsed id
-
-    const link = await contextValue.prisma.link.findUnique({
-      where: { id: parsedId },
-    });
-
-    console.log(`Link: ${JSON.stringify(link)}`); // Log the link
-
-    if (!link) {
-      console.log(`No link found with id: ${parsedId}`);
-      return null;
-    }
-
-    await contextValue.prisma.vote.deleteMany({
-      where: { linkId: parsedId },
-    });
-
-    let deletedLink;
-    try {
-      deletedLink = await contextValue.prisma.link.delete({
-        where: { id: parsedId },
-      });
-    } catch (error) {
-      console.error("Error deleting link:", error);
-      throw error;
-    }
-
-    console.log(`Deleted link: ${JSON.stringify(deletedLink)}`); // Log the deleted link
-    return deletedLink;
-  } catch (error) {
-    console.error("Error in deleteLink function:", error);
-    throw error;
-  }
-};
 
 //VOTE
 export const vote = async (_, args, contextValue, ____) => {
