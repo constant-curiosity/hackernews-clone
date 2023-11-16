@@ -1,4 +1,3 @@
-import { PubSub } from "graphql-subscriptions";
 import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { createServer } from "http";
@@ -6,6 +5,7 @@ import { expressMiddleware } from "@apollo/server/express4";
 import { getUserId } from "./util/authUtils.js";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { PrismaClient } from "@prisma/client";
+import { PubSub } from "graphql-subscriptions";
 import { typeDefs } from "./graphql/schema.js";
 import { useServer } from "graphql-ws/lib/use/ws";
 import { WebSocketServer } from "ws";
