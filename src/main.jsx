@@ -1,13 +1,13 @@
+import "./styles/index.css";
+import { cacheExchange } from "@urql/exchange-graphcache";
+import { Client, fetchExchange, Provider } from "urql";
+import App from "./components/App";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./components/App";
-import "./styles/index.css";
-import { Provider, Client, fetchExchange } from "urql";
-import { cacheExchange } from "@urql/exchange-graphcache";
 
 const cache = cacheExchange({});
 const client = new Client({
-  url: "http://localhost:4000",
+  url: "http://localhost:4000/graphql",
   exchanges: [cache, fetchExchange],
 });
 
