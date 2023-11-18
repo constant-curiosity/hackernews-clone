@@ -6,28 +6,12 @@ const FEED_QUERY = gql`
   query Feed {
     feed {
       links {
-        description
         id
+        description
         url
-        postedBy {
-          name
-          id
-          email
-        }
       }
     }
   }
-
-  #   {
-  #     feed {
-  #       links {
-  #         id
-  #         # createdAt
-  #         url
-  #         description
-  #       }
-  #     }
-  #   }
 `;
 
 const LinkList = () => {

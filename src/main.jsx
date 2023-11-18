@@ -1,9 +1,12 @@
 import "./styles/index.css";
 import { cacheExchange } from "@urql/exchange-graphcache";
 import { Client, fetchExchange, Provider } from "urql";
-import App from "./components/App";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { publicRoutes } from "./routes/PublicRoutes";
 import React from "react";
 import ReactDOM from "react-dom/client";
+
+const router = createBrowserRouter([...publicRoutes]);
 
 const cache = cacheExchange({});
 const client = new Client({
@@ -14,35 +17,7 @@ const client = new Client({
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider value={client}>
-      <App />
+      <RouterProvider router={router}></RouterProvider>
     </Provider>
   </React.StrictMode>
 );
-
-// import React from "react";
-// import ReactDOM from "react-dom/client";
-// import App from "./components/App";
-// import "./styles/index.css";
-// import {
-//   ApolloProvider,
-//   ApolloClient,
-//   createHttpLink,
-//   InMemoryCache,
-// } from "@apollo/client";
-
-// const httpLink = createHttpLink({
-//   uri: "http://localhost:4000",
-// });
-
-// const client = new ApolloClient({
-//   link: httpLink,
-//   cache: new InMemoryCache(),
-// });
-
-// ReactDOM.createRoot(document.getElementById("root")).render(
-//   <React.StrictMode>
-//     <ApolloProvider client={client}>
-//       <App />
-//     </ApolloProvider>
-//   </React.StrictMode>
-// );
