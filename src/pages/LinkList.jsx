@@ -1,6 +1,6 @@
 import { useQuery } from "urql";
 import gql from "graphql-tag";
-import Link from "./Link";
+import Link from "../components/Link";
 
 const FEED_QUERY = gql`
   query Feed {
