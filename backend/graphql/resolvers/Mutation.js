@@ -5,34 +5,9 @@ import {
   signupValidation,
   loginValidation,
 } from "../../validations/validationSchema.js";
+import { z } from "zod";
 
 //SIGNUP
-// export const signup = async (_, args, contextValue, ____) => {
-//   try {
-//     signupValidation.parse(args);
-//     const password = await bcrypt.hash(args.password, 10);
-//     const user = await contextValue.prisma.user.create({
-//       data: { ...args, password },
-//     });
-//     const token = jwt.sign({ userId: user.id }, APP_SECRET);
-//     return {
-//       token,
-//       user,
-//     };
-//   } catch (error) {
-//     if (error instanceof z.ZodError) {
-//       const errorMessage = error.issues
-//         .map((issue) => issue.message)
-//         .join(", ");
-//       return {
-//         errors: [{ message: errorMessage }],
-//       };
-//     } else {
-//       throw new Error(error.message);
-//     }
-//   }
-// };
-
 export const signup = async (_, args, contextValue, ____) => {
   try {
     signupValidation.parse(args);
@@ -51,7 +26,6 @@ export const signup = async (_, args, contextValue, ____) => {
   } catch (error) {
     if (error instanceof z.ZodError) {
       const errors = error.issues.map((issue) => ({
-        field: issue.path.join("."),
         message: issue.message,
       }));
       return {
@@ -145,3 +119,7 @@ export default {
   vote,
   // deleteLink,
 };
+
+//Additions
+//1. Sanitizing  inputs
+//2. Read on securing Gql queries

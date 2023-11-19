@@ -1,26 +1,23 @@
+import { DevTool } from "@hookform/devtools";
 import { useForm } from "react-hook-form";
 import { useMutation } from "urql";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import gql from "graphql-tag";
-import { DevTool } from "@hookform/devtools";
-import { useNavigate } from "react-router-dom";
 
 // GraphQL Mutations
 const SIGNUP_MUTATION = gql`
   mutation Signup($email: String!, $password: String!, $name: String!) {
     signup(email: $email, password: $password, name: $name) {
       authPayload {
-        token
         user {
-          id
           name
           email
         }
       }
       errors {
-        field
         message
       }
     }
@@ -72,21 +69,61 @@ const SignupLogin = () => {
     resolver: zodResolver(currentSchema),
   });
 
-  //Submit Handler Data To Server
+  //Data Mutation Handler Sent To The Server
   const onFormSubmitHandler = async (data) => {
     try {
       const response = await signupOrLoginMutation(data);
-      // const signupResponse = response.data;
+      console.log("Response:", response);
+
+      if (response.data === undefined) {
+        console.log("Error: Response data is undefined");
+        navigate("/error", { state: { errorMessage: "Something went wrong" } });
+        return;
+      }
+
+      if (!isLogin && response.data?.signup.errors.length > 0) {
+        console.log("errors:", response.data.signup.errors);
+        const validationErrors = response.data.signup.errors
+          .map((err) => err.message)
+          .join(", ");
+        navigate("/error", { state: { errorMessage: validationErrors } });
+        return;
+      }
+
+      if (isLogin && response.data?.login.errors.length > 0) {
+        const validationErrors = response.data.login.errors
+          .map((err) => err.message)
+          .join(", ");
+        navigate("/error", { state: { errorMessage: validationErrors } });
+        return;
+      }
+
       if (isLogin && response.data) {
-        console.log(response.data);
+        console.log("Login successful:", response.data);
         reset();
         navigate("/");
-      } else if (!isLogin && response.data.signup.authPayload.user) {
+        return;
+      }
+
+      if (!isLogin && response.data) {
+        console.log("Signup successful:", response.data);
         reset();
         setIsLogin(true);
+        return;
       }
+
+      console.log("Unknown error:", response);
+      navigate("/error", {
+        state: { errorMessage: "An unknown error occurred." },
+      });
     } catch (err) {
-      console.log(err);
+      navigate("/error", {
+        state: {
+          errorMessage:
+            err.message || "An error occurred during form submission.",
+        },
+      });
+      console.log("Catch block error:", err);
     }
   };
 
@@ -134,5 +171,4 @@ export default SignupLogin;
 //Considerations
 //1. Need better variable name for clarity : const [isLogin, setIsLogin] = useState(true);
 //2. Add functionality for reset password
-//3. If there are server errors or network errors redirect to error page adding the error message
 //4.
