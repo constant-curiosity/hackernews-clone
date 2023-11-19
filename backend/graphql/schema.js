@@ -21,7 +21,7 @@ export const typeDefs = `#graphql
     deleteLink(id: ID!): Link
     login(email: String!, password: String!): AuthPayload
     post(url: String!, description: String!): Link!
-    signup(email: String!, password: String!, name: String!): AuthPayload
+    signup(email: String!, password: String!, name: String!): SignupResponse
     updateLink(id: ID!, url: String, description: String): Link
     vote(linkId: ID!): Vote
   }
@@ -50,5 +50,14 @@ type Vote {
   id: ID!
   link: Link!
   user: User!
+}
+type FieldError {
+  field: String
+  message: String
+}
+
+type SignupResponse {
+  errors: [FieldError]
+  authPayload: AuthPayload
 }
 `;

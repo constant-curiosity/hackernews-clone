@@ -1,18 +1,67 @@
 import { APP_SECRET } from "../../util/authUtils.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import {
+  signupValidation,
+  loginValidation,
+} from "../../validations/validationSchema.js";
 
 //SIGNUP
+// export const signup = async (_, args, contextValue, ____) => {
+//   try {
+//     signupValidation.parse(args);
+//     const password = await bcrypt.hash(args.password, 10);
+//     const user = await contextValue.prisma.user.create({
+//       data: { ...args, password },
+//     });
+//     const token = jwt.sign({ userId: user.id }, APP_SECRET);
+//     return {
+//       token,
+//       user,
+//     };
+//   } catch (error) {
+//     if (error instanceof z.ZodError) {
+//       const errorMessage = error.issues
+//         .map((issue) => issue.message)
+//         .join(", ");
+//       return {
+//         errors: [{ message: errorMessage }],
+//       };
+//     } else {
+//       throw new Error(error.message);
+//     }
+//   }
+// };
+
 export const signup = async (_, args, contextValue, ____) => {
-  const password = await bcrypt.hash(args.password, 10);
-  const user = await contextValue.prisma.user.create({
-    data: { ...args, password },
-  });
-  const token = jwt.sign({ userId: user.id }, APP_SECRET);
-  return {
-    token,
-    user,
-  };
+  try {
+    signupValidation.parse(args);
+    const password = await bcrypt.hash(args.password, 10);
+    const user = await contextValue.prisma.user.create({
+      data: { ...args, password },
+    });
+    const token = jwt.sign({ userId: user.id }, APP_SECRET);
+    return {
+      authPayload: {
+        token,
+        user,
+      },
+      errors: [],
+    };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const errors = error.issues.map((issue) => ({
+        field: issue.path.join("."),
+        message: issue.message,
+      }));
+      return {
+        authPayload: null,
+        errors: errors,
+      };
+    } else {
+      throw new Error(error.message);
+    }
+  }
 };
 
 //LOGIN
@@ -36,12 +85,12 @@ export const login = async (_, args, contextValue, ____) => {
 
 //POST
 export const post = async (_, args, contextValue, ____) => {
-  // const { userId } = contextValue;
+  const { userId } = contextValue;
   const newLink = await contextValue.prisma.link.create({
     data: {
       url: args.url,
       description: args.description,
-      // postedBy: { connect: { id: userId } },
+      postedBy: { connect: { id: userId } },
     },
   });
   await contextValue.pubsub.publish("NEW_LINK", { newLink });
