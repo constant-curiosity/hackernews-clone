@@ -11,6 +11,16 @@ import { z } from "zod";
 export const signup = async (_, args, contextValue, ____) => {
   try {
     signupValidation.parse(args);
+    const existingUser = await contextValue.prisma.user.findUnique({
+      where: { email: args.email },
+    });
+
+    if (existingUser) {
+      return {
+        authPayload: null,
+        errors: [{ message: "Email already in use." }],
+      };
+    }
     const password = await bcrypt.hash(args.password, 10);
     const user = await contextValue.prisma.user.create({
       data: { ...args, password },

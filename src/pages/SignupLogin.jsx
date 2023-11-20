@@ -1,4 +1,3 @@
-import { DevTool } from "@hookform/devtools";
 import { useForm } from "react-hook-form";
 import { useMutation } from "urql";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import gql from "graphql-tag";
 
-// GraphQL Mutations
+// GraphQL Mutations // Separate File
 const SIGNUP_MUTATION = gql`
   mutation Signup($email: String!, $password: String!, $name: String!) {
     signup(email: $email, password: $password, name: $name) {
@@ -40,7 +39,7 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
-//Input Validation
+//Input Validation // Separate File
 const signupSchema = z.object({
   name: z.string().min(2, "Name is required"),
   email: z.string().email("Invalid email address"),
@@ -59,7 +58,7 @@ const SignupLogin = () => {
   const [signupOrLogin, signupOrLoginMutation] = useMutation(
     isLogin ? LOGIN_MUTATION : SIGNUP_MUTATION
   );
-  const currentSchema = isLogin ? loginSchema : signupSchema;
+  const currentValidationSchema = isLogin ? loginSchema : signupSchema;
   const {
     register,
     handleSubmit,
@@ -67,11 +66,11 @@ const SignupLogin = () => {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: zodResolver(currentSchema),
+    resolver: zodResolver(currentValidationSchema),
   });
 
   //Data Mutation Handler Sent To The Server
-  //Error Helper Function - code is repetitive.
+  //Separate File
   const onFormSubmitHandler = async (data) => {
     try {
       const response = await signupOrLoginMutation(data);
@@ -83,49 +82,32 @@ const SignupLogin = () => {
         return;
       }
 
-      if (!isLogin && response.data?.signup.errors.length > 0) {
-        console.log("errors:", response.data.signup.errors);
-        const validationErrors = response.data.signup.errors
+      const operation = isLogin ? "login" : "signup";
+      const operationData = response.data[operation];
+      if (operationData.errors && operationData.errors.length > 0) {
+        const validationErrors = operationData.errors
           .map((err) => err.message)
           .join(", ");
         navigate("/error", { state: { errorMessage: validationErrors } });
         return;
       }
-
-      if (isLogin && response.data?.login.errors.length > 0) {
-        const validationErrors = response.data.login.errors
-          .map((err) => err.message)
-          .join(", ");
-        navigate("/error", { state: { errorMessage: validationErrors } });
-        return;
-      }
-
-      if (isLogin && response.data) {
-        console.log("Login successful:", response.data);
+      if (isLogin) {
+        console.log("Login successful:", operationData);
         reset();
         navigate("/");
-        return;
-      }
-
-      if (!isLogin && response.data) {
-        console.log("Signup successful:", response.data);
+      } else {
+        console.log("Signup successful:", operationData);
         reset();
         setIsLogin(true);
-        return;
       }
-
-      console.log("Unknown error:", response);
-      navigate("/error", {
-        state: { errorMessage: "An unknown error occurred." },
-      });
     } catch (err) {
+      console.log("Catch block error:", err);
       navigate("/error", {
         state: {
           errorMessage:
             err.message || "An error occurred during form submission.",
         },
       });
-      console.log("Catch block error:", err);
     }
   };
 
@@ -147,6 +129,7 @@ const SignupLogin = () => {
         {errors.password && <p>{errors.password.message}</p>}
       </div>
 
+      {/* Make reusable button components */}
       {/* Submit Button */}
       <div className="flex mt3">
         <button type="submit" className="pointer mr2 button">
@@ -162,8 +145,6 @@ const SignupLogin = () => {
           {isLogin ? "need to create an account?" : "already have an account?"}
         </button>
       </div>
-      {/* {signupResponse.errors && <p>{signupResponse.errors}</p>} */}
-      <DevTool control={control} />
     </form>
   );
 };
@@ -173,4 +154,34 @@ export default SignupLogin;
 //Considerations
 //1. Need better variable name for clarity : const [isLogin, setIsLogin] = useState(true);
 //2. Add functionality for reset password
-//4.
+//4. Let the user know thier sign up was successful
+
+// if (!isLogin && response.data?.signup.errors.length > 0) {
+//   console.log("errors:", response.data.signup.errors);
+//   const validationErrors = response.data.signup.errors
+//     .map((err) => err.message)
+//     .join(", ");
+//   navigate("/error", { state: { errorMessage: validationErrors } });
+//   return;
+// }
+
+// if (isLogin && response.data?.login.errors.length > 0) {
+//   const validationErrors = response.data.login.errors
+//     .map((err) => err.message)
+//     .join(", ");
+//   navigate("/error", { state: { errorMessage: validationErrors } });
+//   return;
+// }
+// if (isLogin && response.data) {
+//   console.log("Login successful:", response.data);
+//   reset();
+//   navigate("/");
+//   return;
+// }
+
+// if (!isLogin && response.data) {
+//   console.log("Signup successful:", response.data);
+//   reset();
+//   setIsLogin(true);
+//   return;
+// }
