@@ -6,11 +6,12 @@ import {
   loginValidation,
 } from "../../validations/validationSchema.js";
 import { z } from "zod";
+import validateWithZod from "../../validations/validateWithZod.js";
 
 //SIGNUP
 export const signup = async (_, args, contextValue, ____) => {
   try {
-    signupValidation.parse(args);
+    validateWithZod(signupValidation, args);
     const existingUser = await contextValue.prisma.user.findUnique({
       where: { email: args.email },
     });
@@ -34,13 +35,10 @@ export const signup = async (_, args, contextValue, ____) => {
       errors: [],
     };
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const errors = error.issues.map((issue) => ({
-        message: issue.message,
-      }));
+    if (error.message.includes("validationErrors")) {
       return {
         authPayload: null,
-        errors: errors,
+        errors: JSON.parse(error.message).validationErrors,
       };
     } else {
       throw new Error(error.message);
@@ -50,24 +48,40 @@ export const signup = async (_, args, contextValue, ____) => {
 
 //LOGIN
 export const login = async (_, args, contextValue, ____) => {
-  const user = await contextValue.prisma.user.findUnique({
-    where: { email: args.email },
-  });
-  if (!user) {
-    throw new Error("No such user found");
+  try {
+    validateWithZod(loginValidation, args);
+    const user = await contextValue.prisma.user.findUnique({
+      where: { email: args.email },
+    });
+    if (!user) {
+      return {
+        errors: [{ message: "Invalid email ." }],
+      };
+    }
+    const valid = await bcrypt.compare(args.password, user.password);
+    if (!valid) {
+      return {
+        errors: [{ message: "Invalid password." }],
+      };
+    }
+    const token = jwt.sign({ userId: user.id }, APP_SECRET);
+    return {
+      authPayload: {
+        token,
+        user,
+      },
+      errors: [],
+    };
+  } catch (error) {
+    if (error.message.includes("validationErrors")) {
+      return {
+        authPayload: null,
+        errors: JSON.parse(error.message).validationErrors,
+      };
+    } else {
+      throw new Error(error.message);
+    }
   }
-  const valid = await bcrypt.compare(args.password, user.password);
-  if (!valid) {
-    throw new Error("Invalid password");
-  }
-  const token = jwt.sign({ userId: user.id }, APP_SECRET);
-  return {
-    authPayload: {
-      token,
-      user,
-    },
-    errors: [],
-  };
 };
 
 //POST
