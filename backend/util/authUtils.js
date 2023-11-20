@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
-export const APP_SECRET = "GraphQL-is-aw3some";
+const APP_SECRET_KEY = process.env.APP_SECRET_KEY;
 
 const getTokenPayload = (token) => {
-  return jwt.verify(token, APP_SECRET);
+  return jwt.verify(token, APP_SECRET_KEY);
 };
 
 export const getUserId = (req, authToken) => {
@@ -25,6 +25,5 @@ export const getUserId = (req, authToken) => {
 };
 
 export default {
-  APP_SECRET,
   getUserId,
 };

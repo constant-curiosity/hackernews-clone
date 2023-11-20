@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { createServer } from "http";
@@ -9,14 +10,16 @@ import { PubSub } from "graphql-subscriptions";
 import { typeDefs } from "./graphql/schema.js";
 import { useServer } from "graphql-ws/lib/use/ws";
 import { WebSocketServer } from "ws";
+import AuthMutations from "./graphql/resolvers/mutations/auth/index.js";
+import PostMutations from "./graphql/resolvers/mutations/post/index.js";
+import VoteMutations from "./graphql/resolvers/mutations/vote/index.js";
+import TypeResolvers from "./graphql/resolvers/type/index.js";
 import cors from "cors";
 import express from "express";
 import Link from "./graphql/resolvers/Link.js";
-import Mutation from "./graphql/resolvers/Mutation.js";
 import Query from "./graphql/resolvers/Query.js";
 import subscriptionResolvers from "./graphql/resolvers/Subscription.js";
-import User from "./graphql/resolvers/User.js";
-import Vote from "./graphql/resolvers/Vote.js";
+// import Vote from "./graphql/resolvers/Vote.js";
 const port = 4000;
 const app = express();
 const httpServer = createServer(app);
@@ -25,11 +28,20 @@ const pubsub = new PubSub();
 
 const resolvers = {
   Link,
-  Mutation,
+  Mutation: {
+    ...AuthMutations,
+    ...PostMutations,
+    ...VoteMutations,
+  },
+  User: {
+    ...TypeResolvers.userLinks,
+  },
+  Vote: {
+    ...TypeResolvers.linkUserVote,
+  },
   Query,
   Subscription: subscriptionResolvers,
-  User,
-  Vote,
+  // Vote,
 };
 
 const schema = makeExecutableSchema({
