@@ -22,19 +22,20 @@ const SIGNUP_MUTATION = gql`
       }
     }
   }
-
-  # mutation Signup($email: String!, $password: String!, $name: String!) {
-  #   signup(email: $email, password: $password, name: $name) {
-  #     authPayload {
-  #       token
-  #     }
-  #   }
-  # }
 `;
 const LOGIN_MUTATION = gql`
   mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
-      token
+      authPayload {
+        token
+        user {
+          name
+          email
+        }
+      }
+      errors {
+        message
+      }
     }
   }
 `;
@@ -70,6 +71,7 @@ const SignupLogin = () => {
   });
 
   //Data Mutation Handler Sent To The Server
+  //Error Helper Function - code is repetitive.
   const onFormSubmitHandler = async (data) => {
     try {
       const response = await signupOrLoginMutation(data);

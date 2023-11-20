@@ -19,7 +19,7 @@ export const typeDefs = `#graphql
   }
   type Mutation {
     deleteLink(id: ID!): Link
-    login(email: String!, password: String!): AuthPayload
+    login(email: String!, password: String!): LoginResponse
     post(url: String!, description: String!): Link!
     signup(email: String!, password: String!, name: String!): SignupResponse
     updateLink(id: ID!, url: String, description: String): Link
@@ -55,8 +55,11 @@ type FieldError {
   field: String
   message: String
 }
-
 type SignupResponse {
+  errors: [FieldError]
+  authPayload: AuthPayload
+}
+type LoginResponse {
   errors: [FieldError]
   authPayload: AuthPayload
 }

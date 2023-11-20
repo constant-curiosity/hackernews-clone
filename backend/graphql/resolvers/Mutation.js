@@ -52,8 +52,11 @@ export const login = async (_, args, contextValue, ____) => {
   }
   const token = jwt.sign({ userId: user.id }, APP_SECRET);
   return {
-    token,
-    user,
+    authPayload: {
+      token,
+      user,
+    },
+    errors: [],
   };
 };
 
