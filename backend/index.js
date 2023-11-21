@@ -13,7 +13,7 @@ import { useServer } from "graphql-ws/lib/use/ws";
 import { WebSocketServer } from "ws";
 import cors from "cors";
 import express from "express";
-import resolvers from "./graphql/resolvers/grpahqlResolverObj.js";
+import resolvers from "./graphql/resolvers/graphqlResolverObj.js";
 const port = 4000;
 const app = express();
 const httpServer = createServer(app);
