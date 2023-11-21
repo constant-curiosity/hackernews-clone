@@ -5,3 +5,6 @@ export default {
   userLinks,
   linkUserVote,
 };
+
+//linkUserVote needs a better variable name
+//userLinks is fine

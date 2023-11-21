@@ -10,16 +10,9 @@ import { PubSub } from "graphql-subscriptions";
 import { typeDefs } from "./graphql/schema.js";
 import { useServer } from "graphql-ws/lib/use/ws";
 import { WebSocketServer } from "ws";
-import AuthMutations from "./graphql/resolvers/mutations/auth/index.js";
-import PostMutations from "./graphql/resolvers/mutations/post/index.js";
-import VoteMutations from "./graphql/resolvers/mutations/vote/index.js";
-import TypeResolvers from "./graphql/resolvers/type/index.js";
 import cors from "cors";
 import express from "express";
-import Link from "./graphql/resolvers/Link.js";
-import Query from "./graphql/resolvers/Query.js";
-import subscriptionResolvers from "./graphql/resolvers/Subscription.js";
-// import Vote from "./graphql/resolvers/Vote.js";
+import allResolvers from "./graphql/resolvers/allResolvers.js";
 const port = 4000;
 const app = express();
 const httpServer = createServer(app);
@@ -27,21 +20,20 @@ const prisma = new PrismaClient();
 const pubsub = new PubSub();
 
 const resolvers = {
-  Link,
+  Link: allResolvers.Link,
   Mutation: {
-    ...AuthMutations,
-    ...PostMutations,
-    ...VoteMutations,
+    ...allResolvers.AuthMutations,
+    ...allResolvers.PostMutations,
+    ...allResolvers.VoteMutations,
   },
   User: {
-    ...TypeResolvers.userLinks,
+    ...allResolvers.TypeResolvers.userLinks,
   },
   Vote: {
-    ...TypeResolvers.linkUserVote,
+    ...allResolvers.TypeResolvers.linkUserVote,
   },
-  Query,
-  Subscription: subscriptionResolvers,
-  // Vote,
+  Query: allResolvers.Query,
+  Subscription: allResolvers.Subscription,
 };
 
 const schema = makeExecutableSchema({
