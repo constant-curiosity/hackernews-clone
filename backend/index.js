@@ -92,8 +92,6 @@ app.use(
 );
 
 httpServer.listen(port, () => {
-  console.log(`🚀 Query endpoint ready at http://localhost:${port}/graphql`);
-  console.log(
-    `🚀 Subscription endpoint ready at ws://localhost:${port}/graphql`
-  );
+  console.log(`Query endpoint ready at http://localhost:${port}/graphql`);
+  console.log(`Subscription endpoint ready at ws://localhost:${port}/graphql`);
 });
