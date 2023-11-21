@@ -14,3 +14,13 @@ export default {
   postedBy,
   votes,
 };
+
+// This is part of : type Link
+
+// type Link {
+//   id: ID!
+//   description: String!
+//   url: String!
+//   postedBy: User
+//   votes: [Vote!]!
+// }

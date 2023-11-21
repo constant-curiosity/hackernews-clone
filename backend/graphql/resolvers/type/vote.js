@@ -14,3 +14,11 @@ export default {
   link,
   user,
 };
+
+// This is part of : type Vote.
+
+// type Vote {
+//   id: ID!
+//   link: Link!
+//   user: User!
+// }

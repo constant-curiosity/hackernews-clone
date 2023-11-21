@@ -1,7 +1,9 @@
 import allResolvers from "./allResolvers.js";
 
 const resolvers = {
-  Link: allResolvers.Link,
+  Link: {
+    ...allResolvers.TypeResolvers.postedByVotesonLink,
+  },
   Mutation: {
     ...allResolvers.AuthMutations,
     ...allResolvers.PostMutations,

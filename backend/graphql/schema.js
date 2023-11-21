@@ -1,7 +1,7 @@
 export const typeDefs = `#graphql
   type Query {
-    info: String!
     feed(filter: String, skip: Int, take: Int, orderBy: LinkOrderByInput): Feed!
+    # Need to build link query
     link(id: ID!): Link
   }
   input LinkOrderByInput {
