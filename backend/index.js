@@ -4,27 +4,18 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import { createServer } from "http";
 import { expressMiddleware } from "@apollo/server/express4";
 import { getUserId } from "./util/authUtils.js";
-import { makeExecutableSchema } from "@graphql-tools/schema";
 import { PrismaClient } from "@prisma/client";
 import { PubSub } from "graphql-subscriptions";
-//Move to the gql directory (typeDefs) ?
-import { typeDefs } from "./graphql/schema.js";
 import { useServer } from "graphql-ws/lib/use/ws";
 import { WebSocketServer } from "ws";
 import cors from "cors";
 import express from "express";
-import resolvers from "./graphql/resolvers/graphqlResolverObj.js";
-const port = 4000;
+import schema from "./graphql/schema/schemaExecutable.js";
 const app = express();
 const httpServer = createServer(app);
+const port = 4000;
 const prisma = new PrismaClient();
 const pubsub = new PubSub();
-
-//Move to the gql directory (schema) ?
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers: resolvers,
-});
 
 const wsServer = new WebSocketServer({
   server: httpServer,
