@@ -13,6 +13,7 @@ export const post = async (_, args, contextValue, ____) => {
 
 export default post;
 
-//1. Build validate schema for zod
+//1. Build validate schema from zod
 //2. Account for Errors with zod
 //3. Make sure the user is validated before posting
+// if check then return error to user

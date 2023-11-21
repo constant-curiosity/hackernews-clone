@@ -7,35 +7,20 @@ import { getUserId } from "./util/authUtils.js";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { PrismaClient } from "@prisma/client";
 import { PubSub } from "graphql-subscriptions";
+//Move to the gql directory (typeDefs) ?
 import { typeDefs } from "./graphql/schema.js";
 import { useServer } from "graphql-ws/lib/use/ws";
 import { WebSocketServer } from "ws";
-import allResolvers from "./graphql/resolvers/allResolvers.js";
 import cors from "cors";
 import express from "express";
+import resolvers from "./graphql/resolvers/grpahqlResolverObj.js";
 const port = 4000;
 const app = express();
 const httpServer = createServer(app);
 const prisma = new PrismaClient();
 const pubsub = new PubSub();
 
-const resolvers = {
-  Link: allResolvers.Link,
-  Mutation: {
-    ...allResolvers.AuthMutations,
-    ...allResolvers.PostMutations,
-    ...allResolvers.VoteMutations,
-  },
-  User: {
-    ...allResolvers.TypeResolvers.userLinks,
-  },
-  Vote: {
-    ...allResolvers.TypeResolvers.linkUserVote,
-  },
-  Query: allResolvers.Query,
-  Subscription: allResolvers.Subscription,
-};
-
+//Move to the gql directory (schema) ?
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers: resolvers,
