@@ -15,7 +15,9 @@ const resolvers = {
   Vote: {
     ...allResolvers.TypeResolvers.linkUserVote,
   },
-  Query: allResolvers.Query,
+  Query: {
+    ...allResolvers.QueryResolvers.feedList,
+  },
   Subscription: allResolvers.Subscription,
 };
 
