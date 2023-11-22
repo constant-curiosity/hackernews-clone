@@ -1,0 +1,76 @@
+/* .linkContainer {
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 8px auto;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+} */
+
+/* .linkContainer {
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 8px;
+  margin-left: 100px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+}
+
+.description {
+  font-size: 1.2em;
+  color: #444;
+}
+
+.url {
+  font-size: 1em;
+  color: #0066cc;
+  word-break: break-all;
+}
+
+.username {
+  font-size: 0.9em;
+  color: #555;
+  text-align: right;
+}
+
+.linkContainer > div:not(:last-child) {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 8px;
+}
+
+.linkContainer > div:last-child {
+  padding-top: 8px;
+} */
+
+.linkItem {
+  font-family: Verdana, sans-serif;
+  font-size: 10pt;
+  line-height: 12pt;
+  color: #828282;
+  margin-bottom: 5px; /* Space between link items */
+}
+
+.description {
+  margin-right: 5px;
+  color: #000; /* Black text for the description */
+}
+
+.url {
+  font-size: 8pt; /* Smaller font size for the URL */
+  color: #828282; /* Grey text for the URL */
+  text-decoration: none; /* No underline for the link */
+  margin-right: 5px;
+}
+
+.url:hover {
+  text-decoration: underline; /* Underline on hover for the link */
+}
+
+.username {
+  font-size: 8pt; /* Smaller font size for the username */
+}
