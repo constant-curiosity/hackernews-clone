@@ -1,29 +1,9 @@
 import { useMutation } from "urql";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import gql from "graphql-tag";
+import POST_MUTATION from "../graphql/mutation/createPost";
 
-const POST_MUTATION = gql`
-  mutation PostMutation($description: String!, $url: String!) {
-    post(description: $description, url: $url) {
-      id
-      url
-      description
-      postedBy {
-        id
-        name
-      }
-      votes {
-        id
-        user {
-          id
-        }
-      }
-    }
-  }
-`;
-
-const CreateLink = (props) => {
+const CreateLink = () => {
   const [description, setDescription] = useState("");
   const [state, executeMutation] = useMutation(POST_MUTATION);
   const [url, setUrl] = useState("");

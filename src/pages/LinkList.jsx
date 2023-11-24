@@ -1,33 +1,7 @@
 import { useQuery } from "urql";
-import gql from "graphql-tag";
 import Link from "../components/Link";
 import styles from "./linklist.module.css";
-
-// const FEED_QUERY = gql`
-//   query Feed {
-//     feed {
-//       links {
-//         id
-//         description
-//         url
-//       }
-//     }
-//   }
-// `;
-
-const FEED_QUERY = gql`
-  query Feed {
-    feed {
-      links {
-        description
-        url
-        postedBy {
-          name
-        }
-      }
-    }
-  }
-`;
+import FEED_QUERY from "../graphql/query/feedList";
 
 const LinkList = () => {
   const [result] = useQuery({ query: FEED_QUERY });
@@ -37,9 +11,7 @@ const LinkList = () => {
   if (error) return <div>Error</div>;
 
   const linksToRender = data.feed.links;
-  linksToRender.forEach((link) => {
-    console.log(link.postedBy?.name || "Anonymous");
-  });
+  linksToRender.forEach((link) => {});
   return (
     <div className={styles.linksList}>
       {linksToRender.map((link) => (
@@ -47,7 +19,7 @@ const LinkList = () => {
           key={link.id}
           description={link.description}
           url={link.url}
-          username={link.postedBy?.name || "Anonymous"}
+          username={link.postedBy.name}
         />
       ))}
     </div>
@@ -55,12 +27,3 @@ const LinkList = () => {
 };
 
 export default LinkList;
-
-// return (
-//     <div>
-//       {linksToRender.map((link) => (
-//         <Link key={link.id} link={link} />
-//       ))}
-//     </div>
-//   );
-// };
