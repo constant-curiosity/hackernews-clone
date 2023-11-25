@@ -73,38 +73,3 @@ const SignupLogin = () => {
 };
 
 export default SignupLogin;
-
-// <form onSubmit={handleSubmit(handleFormSubmission)}>
-//   <h4 className="mv3">{isLogin ? "Login" : "Sign Up"}</h4>
-
-//   {/* Input Fields */}
-//   <div className="flex flex-column">
-//     {!isLogin && (
-//       <>
-//         <input {...register("name")} placeholder="Your name" />
-//         {errors.name && <p>{errors.name.message}</p>}
-//       </>
-//     )}
-//     <input {...register("email")} placeholder="Your email address" />
-//     {errors.email && <p>{errors.email.message}</p>}
-//     <input {...register("password")} placeholder="Choose a safe password" />
-//     {errors.password && <p>{errors.password.message}</p>}
-//   </div>
-
-//   {/* Make reusable button components */}
-//   {/* Submit Button */}
-//   <div className="flex mt3">
-//     <button type="submit" className="pointer mr2 button">
-//       {isLogin ? "login" : "create account"}
-//     </button>
-
-//     {/* Toggle between Login and Signup */}
-//     <button
-//       type="button"
-//       className="pointer button"
-//       onClick={() => setIsLogin(!isLogin)}
-//     >
-//       {isLogin ? "need to create an account?" : "already have an account?"}
-//     </button>
-//   </div>
-// </form>

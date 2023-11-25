@@ -27,3 +27,5 @@ const LinkList = () => {
 };
 
 export default LinkList;
+
+//1. Need to add server errors
