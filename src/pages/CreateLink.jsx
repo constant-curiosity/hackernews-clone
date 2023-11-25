@@ -2,6 +2,8 @@ import { useMutation } from "urql";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import POST_MUTATION from "../graphql/mutation/createPost";
+// import { postValidation } from "../../backend/validations/validationSchema";
+import styles from "./createlink.module.css";
 
 const CreateLink = () => {
   const [description, setDescription] = useState("");
@@ -9,23 +11,24 @@ const CreateLink = () => {
   const [url, setUrl] = useState("");
   const navigate = useNavigate();
 
-  const onPostSubmitHandler = () => {
-    executeMutation({ url, description });
+  const onPostSubmitHandler = async () => {
+    const response = await executeMutation({ url, description });
+    console.log(response);
     navigate("/");
   };
 
   return (
     <div>
-      <div className="flex flex-column mt3">
+      <div className={styles.flexColumn}>
         <input
-          className="mb2"
+          className={styles.marginBottom}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="A description for the link"
           type="text"
           value={description}
         />
         <input
-          className="mb2"
+          className={styles.marginBottom}
           onChange={(e) => setUrl(e.target.value)}
           placeholder="The URL for the link"
           type="text"

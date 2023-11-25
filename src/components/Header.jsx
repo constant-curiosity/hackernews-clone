@@ -31,7 +31,8 @@
 
 // export default Header;
 
-import { Link, useNavigate } from "react-router-dom";
+// import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, Link } from "react-router-dom";
 import styles from "./header.module.css";
 
 const Header = () => {
@@ -39,18 +40,30 @@ const Header = () => {
   return (
     <div className={styles.headerContainer}>
       <div className={styles.flexFixed}>
-        <div className={styles.siteTitle}>Hacker News</div>
-        <Link to="/" className={styles.link}>
+        <Link className={styles.siteTitle}>
+          <div>Hacker News</div>
+        </Link>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? styles.activeLink : styles.link
+          }
+        >
           new
-        </Link>
+        </NavLink>
         <div className={styles.separator}>|</div>
-        <Link to="/create" className={styles.link}>
+        <NavLink
+          to="/create"
+          className={({ isActive }) =>
+            isActive ? styles.activeLink : styles.link
+          }
+        >
           submit
-        </Link>
+        </NavLink>
       </div>
       <div className={styles.flexFixed}>
-        <div className={styles.pointer} onClick={() => navigate("/")}>
-          logout
+        <div className={styles.pointer} onClick={() => navigate("/login")}>
+          login
         </div>
       </div>
     </div>

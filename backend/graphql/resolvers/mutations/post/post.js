@@ -1,5 +1,14 @@
+import { postValidation } from "../../../../validations/validationSchema.js";
+import validateWithZod from "../../../../validations/validateWithZod.js";
+
 export const post = async (_, args, contextValue, ____) => {
+  validateWithZod(postValidation, args);
   const { userId } = contextValue;
+  if (!userId) {
+    return {
+      errors: [{ message: "You must be logged in to do that" }],
+    };
+  }
   const newLink = await contextValue.prisma.link.create({
     data: {
       url: args.url,

@@ -1,0 +1,12 @@
+/* CreateLink.module.css */
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem; /* Equivalent to Tailwind's mt-3 */
+}
+
+.marginBottom {
+  margin-bottom: 0.5rem; /* Equivalent to Tailwind's mb-2 */
+}
+
+/* Add more custom styles as needed */

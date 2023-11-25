@@ -11,9 +11,15 @@ export const signupValidation = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
+export const postValidation = z.object({
+  description: z.string().min("You number enter a description"),
+  url: z.string().url("Invalid URL"),
+});
+
 const validationSchema = {
   loginValidation,
   signupValidation,
+  postValidation,
 };
 
 export default validationSchema;

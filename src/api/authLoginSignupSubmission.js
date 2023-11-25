@@ -26,6 +26,7 @@ export const onFormSubmitHandler = async ({
     }
 
     if (isLogin) {
+      console.log("Login successful:", response.data.login);
       reset();
       navigate("/");
     } else {
