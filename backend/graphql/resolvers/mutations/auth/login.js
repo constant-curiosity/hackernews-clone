@@ -1,8 +1,9 @@
+const APP_SECRET_KEY = process.env.APP_SECRET_KEY;
 import { loginValidation } from "../../../../validations/validationSchema.js";
+import { setAuthTokenCookie } from "../../../../util/authCookieToken.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import validateWithZod from "../../../../validations/validateWithZod.js";
-const APP_SECRET_KEY = process.env.APP_SECRET_KEY;
 
 export const login = async (_, args, contextValue, ____) => {
   try {
@@ -22,6 +23,9 @@ export const login = async (_, args, contextValue, ____) => {
       };
     }
     const token = jwt.sign({ userId: user.id }, APP_SECRET_KEY);
+
+    setAuthTokenCookie(contextValue.res, token);
+
     return {
       authPayload: {
         token,

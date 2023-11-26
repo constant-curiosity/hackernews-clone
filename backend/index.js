@@ -3,11 +3,12 @@ import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { createServer } from "http";
 import { expressMiddleware } from "@apollo/server/express4";
-import { getUserId } from "./util/authUtils.js";
+import { getUserIdFromToken } from "./util/authUserId.js";
 import { PrismaClient } from "@prisma/client";
 import { PubSub } from "graphql-subscriptions";
 import { useServer } from "graphql-ws/lib/use/ws";
 import { WebSocketServer } from "ws";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import schema from "./graphql/schema/schemaExecutable.js";
@@ -54,13 +55,16 @@ app.use(
   "/graphql",
   cors(),
   express.json(),
+  cookieParser(),
   expressMiddleware(apolloServer, {
-    context: async ({ req }) => {
+    context: async ({ req, res }) => {
+      const userId = getUserIdFromToken(req);
       return {
         req,
+        res,
         prisma,
         pubsub,
-        userId: req && req.headers.authorization ? getUserId(req) : null,
+        userId,
       };
     },
     introspection: true,

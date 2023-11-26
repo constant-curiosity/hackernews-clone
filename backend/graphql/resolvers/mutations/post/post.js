@@ -6,7 +6,7 @@ export const post = async (_, args, contextValue, ____) => {
   const { userId } = contextValue;
   if (!userId) {
     return {
-      errors: [{ message: "You must be logged in to do that" }],
+      errors: [{ message: "Invalid email ." }],
     };
   }
   const newLink = await contextValue.prisma.link.create({
