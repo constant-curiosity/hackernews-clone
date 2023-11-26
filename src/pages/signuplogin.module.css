@@ -1,0 +1,23 @@
+.buttonContainer {
+  display: flex;
+  margin-top: 1rem;
+}
+
+.headerMargin {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.marginRight {
+  margin-right: 1rem;
+}
+
+.marginBottom {
+  margin-bottom: 0.5rem;
+}

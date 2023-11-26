@@ -1,44 +1,53 @@
+import { useForm } from "react-hook-form";
 import { useMutation } from "urql";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
+import InputField from "../components/InputField";
+import onPostSubmitHandler from "../api/postSubmission";
 import POST_MUTATION from "../graphql/mutation/createPost";
-// import { postValidation } from "../../backend/validations/validationSchema";
+import postSchema from "../validation/postValidation";
 import styles from "./createlink.module.css";
+import Button from "../components/Button";
 
 const CreateLink = () => {
-  const [description, setDescription] = useState("");
-  const [state, executeMutation] = useMutation(POST_MUTATION);
-  const [url, setUrl] = useState("");
+  const [, executeMutation] = useMutation(POST_MUTATION);
   const navigate = useNavigate();
-
-  const onPostSubmitHandler = async () => {
-    const response = await executeMutation({ url, description });
-    console.log(response);
-    navigate("/");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: zodResolver(postSchema),
+  });
+  const handlePostSubmission = async (postData) => {
+    onPostSubmitHandler({
+      postData,
+      executeMutation,
+      navigate,
+      reset,
+    });
   };
-
   return (
-    <div>
-      <div className={styles.flexColumn}>
-        <input
-          className={styles.marginBottom}
-          onChange={(e) => setDescription(e.target.value)}
+    <form onSubmit={handleSubmit(handlePostSubmission)}>
+      <div className={styles.inputContainer}>
+        <InputField
+          className={`${styles.inputWidth} ${styles.marginBottom}`}
+          register={register}
+          name="description"
           placeholder="A description for the link"
-          type="text"
-          value={description}
+          error={errors.description}
         />
-        <input
-          className={styles.marginBottom}
-          onChange={(e) => setUrl(e.target.value)}
+        <InputField
+          className={`${styles.inputWidth} ${styles.marginBottom}`}
+          register={register}
+          name="url"
           placeholder="The URL for the link"
-          type="text"
-          value={url}
+          error={errors.url}
         />
       </div>
-      <button disabled={state.fetching} onClick={onPostSubmitHandler}>
-        Submit
-      </button>
-    </div>
+      <Button type={"submit"} buttonText={"Submit"} />
+    </form>
   );
 };
 

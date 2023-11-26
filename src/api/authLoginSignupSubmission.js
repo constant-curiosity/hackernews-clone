@@ -8,7 +8,6 @@ export const onFormSubmitHandler = async ({
 }) => {
   try {
     const response = await signupOrLoginMutation(data);
-
     if (!response.data) {
       navigate("/error", { state: { errorMessage: "Something went wrong" } });
       return;

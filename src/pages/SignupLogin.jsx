@@ -8,7 +8,8 @@ import InputField from "../components/InputField";
 import LOGIN_MUTATION from "../graphql/mutation/authMutations/login";
 import onFormSubmitHandler from "../api/authLoginSignupSubmission";
 import SIGNUP_MUTATION from "../graphql/mutation/authMutations/signup";
-import ToggleButton from "../components/ToggleButton";
+import styles from "./signuplogin.module.css";
+import Button from "../components/Button";
 
 const SignupLogin = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -39,10 +40,11 @@ const SignupLogin = () => {
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmission)}>
-      <h4 className="mv3">{isLogin ? "Login" : "Sign Up"}</h4>
-      <div className="flex flex-column">
+      <h4 className={styles.headerMargin}>{isLogin ? "Login" : "Sign Up"}</h4>
+      <div className={styles.inputContainer}>
         {!isLogin && (
           <InputField
+            className={styles.marginBottom}
             register={register}
             name="name"
             placeholder="Your name"
@@ -50,23 +52,32 @@ const SignupLogin = () => {
           />
         )}
         <InputField
+          className={styles.marginBottom}
           register={register}
           name="email"
           placeholder="Your email address"
           error={errors.email}
         />
         <InputField
+          className={styles.marginBottom}
           register={register}
           name="password"
           placeholder="Choose a safe password"
           error={errors.password}
         />
       </div>
-      <div className="flex mt3">
-        <button type="submit" className="pointer mr2 button">
-          {isLogin ? "login" : "create account"}
-        </button>
-        <ToggleButton isLogin={isLogin} onClick={() => setIsLogin(!isLogin)} />
+      <div className={styles.buttonContainer}>
+        <Button
+          type={"submit"}
+          buttonText={isLogin ? "login" : "create account"}
+        />
+        <Button
+          type={"button"}
+          buttonText={
+            isLogin ? "need to create an account?" : "already have an account?"
+          }
+          onClick={() => setIsLogin(!isLogin)}
+        />
       </div>
     </form>
   );

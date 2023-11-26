@@ -1,5 +1,6 @@
-import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import Button from "../components/Button";
 
 const ServerError = () => {
   const location = useLocation();
@@ -9,9 +10,10 @@ const ServerError = () => {
     <div>
       <h1>Error</h1>
       <p>{errorMessage}</p>
-      <button>
-        <Link to="/login">Login</Link>
-      </button>
+
+      <Link to="/login">
+        <Button buttonText={"Login"} />
+      </Link>
     </div>
   );
 };

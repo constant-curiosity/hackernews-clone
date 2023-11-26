@@ -62,6 +62,7 @@ const Header = () => {
         </NavLink>
       </div>
       <div className={styles.flexFixed}>
+        //Should be conditional rendering based on user authentication
         <div className={styles.pointer} onClick={() => navigate("/login")}>
           login
         </div>

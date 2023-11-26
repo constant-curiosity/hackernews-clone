@@ -1,17 +1,20 @@
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
-import styles from "./routererror.module.css"; // Import the CSS module
+import styles from "./routererror.module.css";
+import Button from "../components/Button";
 
 const RouterError = () => {
   return (
-    <div className={styles.center}>
+    <div className={styles.mainContainer}>
       <Header />
-      <div className={`${styles.ph3} ${styles.pv1} ${styles.backgroundGray}`}>
+      <div
+        className={`${styles.paddingContainerLR} ${styles.paddingVertical} ${styles.backgroundGray}`}
+      >
         <h1>Error</h1>
         <p>Router Error</p>
-        <button>
-          <Link to="/">Home</Link>
-        </button>
+        <Link to="/">
+          <Button buttonText={"Home"} />
+        </Link>
       </div>
     </div>
   );

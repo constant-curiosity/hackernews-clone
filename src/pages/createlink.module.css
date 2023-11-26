@@ -1,12 +1,21 @@
-/* CreateLink.module.css */
-.flexColumn {
+.inputContainer {
   display: flex;
   flex-direction: column;
-  margin-top: 1rem; /* Equivalent to Tailwind's mt-3 */
+  margin-top: 1rem;
+}
+
+.inputWidth {
+  display: flex;
+  width: 100%;
+  max-width: 500px;
 }
 
 .marginBottom {
-  margin-bottom: 0.5rem; /* Equivalent to Tailwind's mb-2 */
+  margin-bottom: 0.5rem;
 }
 
-/* Add more custom styles as needed */
+@media screen and (max-width: 600px) {
+  .inputWidth {
+    width: 100%;
+  }
+}

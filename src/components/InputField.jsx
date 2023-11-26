@@ -1,6 +1,16 @@
-export const InputField = ({ register, name, placeholder, error }) => (
+export const InputField = ({
+  register,
+  name,
+  placeholder,
+  error,
+  className,
+}) => (
   <div>
-    <input {...register(name)} placeholder={placeholder} />
+    <input
+      {...register(name)}
+      className={className}
+      placeholder={placeholder}
+    />
     {error && <p>{error.message}</p>}
   </div>
 );
