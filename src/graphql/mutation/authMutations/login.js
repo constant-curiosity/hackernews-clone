@@ -4,7 +4,6 @@ export const LOGIN_MUTATION = gql`
   mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       authPayload {
-        token
         user {
           name
           email
@@ -13,6 +12,7 @@ export const LOGIN_MUTATION = gql`
       errors {
         message
       }
+      isLoggedIn
     }
   }
 `;

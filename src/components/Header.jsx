@@ -1,42 +1,30 @@
-// import { Link, useNavigate } from "react-router-dom";
-// import styles from "./header.module.css";
-
-// const Header = () => {
-//   const navigate = useNavigate();
-//   return (
-//     <div className="flex pa1 justify-between nowrap orange">
-//       <div className="flex flex-fixed black">
-//         <div className="fw7 mr1">Hacker News</div>
-//         <Link to="/" className="ml1 no-underline black">
-//           new
-//         </Link>
-//         <div className="ml1">|</div>
-//         <Link to="/create" className="ml1 no-underline black">
-//           submit
-//         </Link>
-//       </div>
-//       <div className="flex flex-fixed">
-//         <div
-//           className="ml1 pointer black"
-//           onClick={() => {
-//             navigate("/");
-//           }}
-//         >
-//           logout
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Header;
-
-// import { Link, useNavigate } from "react-router-dom";
 import { NavLink, useNavigate, Link } from "react-router-dom";
+import { useMutation } from "urql";
+import LOGOUT_MUTATION from "../graphql/mutation/authMutations/logout";
 import styles from "./header.module.css";
+import useisLoggedInStore from "../store/isLoggedIn";
 
 const Header = () => {
+  const { isLoggedInGlobal, setIsLoggedInGlobal } = useisLoggedInStore();
+  const [, logout] = useMutation(LOGOUT_MUTATION);
   const navigate = useNavigate();
+
+  //Maybe move into another directory
+  const logOutHandler = async () => {
+    try {
+      await logout();
+      setIsLoggedInGlobal(false);
+      navigate("/");
+    } catch (error) {
+      navigate("/error", {
+        state: {
+          errorMessage:
+            err.message || "An error occurred during logout. Please try again.",
+        },
+      });
+    }
+  };
+
   return (
     <div className={styles.headerContainer}>
       <div className={styles.flexFixed}>
@@ -62,9 +50,11 @@ const Header = () => {
         </NavLink>
       </div>
       <div className={styles.flexFixed}>
-        //Should be conditional rendering based on user authentication
-        <div className={styles.pointer} onClick={() => navigate("/login")}>
-          login
+        <div
+          className={styles.pointer}
+          onClick={isLoggedInGlobal ? logOutHandler : () => navigate("/login")}
+        >
+          {isLoggedInGlobal ? "logout" : "login"}
         </div>
       </div>
     </div>

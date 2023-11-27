@@ -18,6 +18,7 @@ const LinkList = () => {
           key={link.id}
           description={link.description}
           url={link.url}
+          // username={link.postedBy ? link.postedBy.name : "Anonymous"}
           username={link.postedBy.name}
         />
       ))}

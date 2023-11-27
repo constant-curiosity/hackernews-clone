@@ -4,14 +4,16 @@ import { useMutation } from "urql";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Button from "../components/Button";
 import InputField from "../components/InputField";
 import LOGIN_MUTATION from "../graphql/mutation/authMutations/login";
 import onFormSubmitHandler from "../api/authLoginSignupSubmission";
 import SIGNUP_MUTATION from "../graphql/mutation/authMutations/signup";
 import styles from "./signuplogin.module.css";
-import Button from "../components/Button";
+import useisLoggedInStore from "../store/isLoggedIn";
 
 const SignupLogin = () => {
+  const { setIsLoggedInGlobal } = useisLoggedInStore();
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
   const [, signupOrLoginMutation] = useMutation(
@@ -34,6 +36,7 @@ const SignupLogin = () => {
       navigate,
       reset,
       setIsLogin,
+      setIsLoggedInGlobal,
       signupOrLoginMutation,
     });
   };

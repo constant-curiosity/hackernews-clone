@@ -13,13 +13,15 @@ export const login = async (_, args, contextValue, ____) => {
     });
     if (!user) {
       return {
-        errors: [{ message: "Invalid email ." }],
+        errors: [{ message: "User not found." }],
+        isLoggedIn: false,
       };
     }
     const valid = await bcrypt.compare(args.password, user.password);
     if (!valid) {
       return {
         errors: [{ message: "Invalid password." }],
+        isLoggedIn: false,
       };
     }
     const token = jwt.sign({ userId: user.id }, APP_SECRET_KEY);
@@ -32,6 +34,7 @@ export const login = async (_, args, contextValue, ____) => {
         user,
       },
       errors: [],
+      isLoggedIn: true,
     };
   } catch (error) {
     if (error.message.includes("validationErrors")) {

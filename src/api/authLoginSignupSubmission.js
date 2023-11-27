@@ -4,10 +4,12 @@ export const onFormSubmitHandler = async ({
   navigate,
   reset,
   setIsLogin,
+  setIsLoggedInGlobal,
   signupOrLoginMutation,
 }) => {
   try {
     const response = await signupOrLoginMutation(data);
+    console.log("response", response);
     if (!response.data) {
       navigate("/error", { state: { errorMessage: "Something went wrong" } });
       return;
@@ -24,13 +26,21 @@ export const onFormSubmitHandler = async ({
       return;
     }
 
-    if (isLogin) {
+    if (operation === "signup") {
+      console.log("Signup successful:", response.data.signup);
+      reset();
+      setIsLogin(true);
+    } else if (operationData.isLoggedIn) {
       console.log("Login successful:", response.data.login);
       reset();
+      setIsLoggedInGlobal(true);
       navigate("/");
     } else {
       reset();
-      setIsLogin(true);
+      const errorMessage = isLogin
+        ? "Login failed. Please check your username and password."
+        : "Signup failed. Please check the information you entered.";
+      navigate("/error", { state: { errorMessage } });
     }
   } catch (err) {
     navigate("/error", {
