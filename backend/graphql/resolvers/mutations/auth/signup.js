@@ -36,6 +36,7 @@ export const signup = async (_, args, contextValue, ____) => {
         errors: JSON.parse(error.message).validationErrors,
       };
     } else {
+      console.error(error.message);
       throw new Error(error.message);
     }
   }

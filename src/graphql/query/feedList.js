@@ -12,6 +12,10 @@ export const FEED_QUERY = gql`
           name
         }
       }
+      errors {
+        message
+      }
+      message
     }
   }
 `;

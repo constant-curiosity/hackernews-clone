@@ -1,6 +1,6 @@
 export const typeDefs = `#graphql
   type Query {
-    feed(filter: String, skip: Int, take: Int, orderBy: LinkOrderByInput): Feed!
+    feed(filter: String, skip: Int, take: Int, orderBy: LinkOrderByInput): Feed
     # Need to build link query
     link(id: ID!): Link
   }
@@ -14,8 +14,10 @@ export const typeDefs = `#graphql
     desc
   }
   type Feed {
-    links: [Link!]!
-    count: Int!
+    links: [Link]
+    count: Int
+    message: String
+    errors: [FieldError]
   }
   type Mutation {
     deleteLink(id: ID!): Link

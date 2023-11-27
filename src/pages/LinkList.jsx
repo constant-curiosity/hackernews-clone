@@ -8,7 +8,9 @@ const LinkList = () => {
   const { data, fetching, error } = result;
 
   if (fetching) return <div>Fetching</div>;
-  if (error) return <div>Error</div>;
+  if (error) return <div>{error.message}</div>;
+  if (data.feed.errors.length > 0) return <div>{data.feed.errors[0]}</div>;
+  if (data.feed.message !== "") return <div>{data.feed.message}</div>;
 
   const linksToRender = data.feed.links;
   return (
@@ -18,6 +20,7 @@ const LinkList = () => {
           key={link.id}
           description={link.description}
           url={link.url}
+          //This is here due to a random error that needs to be looked into
           // username={link.postedBy ? link.postedBy.name : "Anonymous"}
           username={link.postedBy.name}
         />

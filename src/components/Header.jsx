@@ -25,6 +25,9 @@ const Header = () => {
     }
   };
 
+  let submitLink;
+  isLoggedInGlobal ? (submitLink = "/create") : (submitLink = "/login");
+
   return (
     <div className={styles.headerContainer}>
       <div className={styles.flexFixed}>
@@ -41,7 +44,7 @@ const Header = () => {
         </NavLink>
         <div className={styles.separator}>|</div>
         <NavLink
-          to="/create"
+          to={submitLink}
           className={({ isActive }) =>
             isActive ? styles.activeLink : styles.link
           }

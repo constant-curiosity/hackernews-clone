@@ -8,6 +8,7 @@ import validateWithZod from "../../../../validations/validateWithZod.js";
 export const login = async (_, args, contextValue, ____) => {
   try {
     validateWithZod(loginValidation, args);
+    console.log("Args:", args);
     const user = await contextValue.prisma.user.findUnique({
       where: { email: args.email },
     });
@@ -43,6 +44,7 @@ export const login = async (_, args, contextValue, ____) => {
         errors: JSON.parse(error.message).validationErrors,
       };
     } else {
+      console.error(error.message);
       throw new Error(error.message);
     }
   }
