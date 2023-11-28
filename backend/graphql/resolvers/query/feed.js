@@ -12,8 +12,14 @@ export const feed = async (_, args, contextValue) => {
       where,
       skip: args.skip,
       take: args.take,
-      orderBy: args.orderBy,
+      // orderBy: args.orderBy,
+      orderBy: args.orderBy || { createdAt: "desc" },
     });
+
+    links.forEach((link) => {
+      link.createdAt = new Date(Number(link.createdAt)).toISOString();
+    });
+
     const count = await contextValue.prisma.link.count({ where });
 
     let message = "";

@@ -12,7 +12,7 @@ const router = createBrowserRouter([...publicRoutes]);
 const cache = cacheExchange({
   updates: {
     Mutation: {
-      post: (result, args, cache, info) => {
+      post: (result, __, cache) => {
         cache.updateQuery({ query: FEED_QUERY }, (data) => {
           return {
             ...data,

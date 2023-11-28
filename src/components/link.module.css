@@ -11,6 +11,12 @@
   color: #000; /* Black text for the description */
 }
 
+.votesAndDate {
+  font-size: 8pt; /* Smaller font size for the votes and date */
+  color: #828282; /* Grey text for the votes and date */
+  margin-right: 5px;
+}
+
 .url {
   font-size: 8pt; /* Smaller font size for the URL */
   color: #828282; /* Grey text for the URL */

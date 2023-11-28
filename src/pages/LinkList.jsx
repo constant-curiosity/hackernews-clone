@@ -13,13 +13,17 @@ const LinkList = () => {
   if (data.feed.message !== "") return <div>{data.feed.message}</div>;
 
   const linksToRender = data.feed.links;
+  console.log(linksToRender.indec);
   return (
     <div className={styles.linksList}>
-      {linksToRender.map((link) => (
+      {linksToRender.map((link, i) => (
         <Link
           key={link.id}
           description={link.description}
           url={link.url}
+          createdAt={link.createdAt}
+          votes={link.votes.length}
+          index={i}
           //This is here due to a random error that needs to be looked into
           // username={link.postedBy ? link.postedBy.name : "Anonymous"}
           username={link.postedBy.name}

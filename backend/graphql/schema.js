@@ -34,6 +34,7 @@ export const typeDefs = `#graphql
     url: String!
     postedBy: User
     votes: [Vote!]!
+    createdAt: String!
    
   }
   type AuthPayload {
