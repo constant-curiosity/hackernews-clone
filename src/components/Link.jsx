@@ -4,7 +4,6 @@ import { timeDifferenceForDate } from "../utils/postDate";
 const upvote = () => {};
 
 const Link = ({ description, url, username, createdAt, votes, index }) => {
-  console.log(index);
   return (
     <div className="flex mt2 items-start">
       <div className="flex items-center">
@@ -21,7 +20,7 @@ const Link = ({ description, url, username, createdAt, votes, index }) => {
           </a>
         </div>
         <div className={styles.votesAndDate}>
-          {votes} votes | <span className={styles.username}>by {username}</span>
+          {votes} votes | <span className={styles.username}>by {username}</span>{" "}
           {timeDifferenceForDate(createdAt)}
         </div>
       </div>
