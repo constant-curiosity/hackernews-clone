@@ -5,6 +5,7 @@ export const post = async (_, args, contextValue, ____) => {
   try {
     validateWithZod(postValidation, args);
     const { userId } = contextValue;
+
     if (!userId) {
       return {
         errors: [{ message: "Invalid email ." }],
@@ -17,6 +18,7 @@ export const post = async (_, args, contextValue, ____) => {
         postedBy: { connect: { id: userId } },
       },
     });
+
     await contextValue.pubsub.publish("NEW_LINK", { newLink });
     return newLink;
   } catch (error) {

@@ -1,7 +1,9 @@
 import styles from "./link.module.css";
 import { timeDifferenceForDate } from "../utils/postDate";
 
-const upvote = () => {};
+const upvote = () => {
+  console.log("voted");
+};
 
 const Link = ({ description, url, username, createdAt, votes, index }) => {
   return (

@@ -13,6 +13,7 @@ const LinkList = () => {
   if (data.feed.message !== "") return <div>{data.feed.message}</div>;
 
   const linksToRender = data.feed.links;
+  console.log("Link Rendering:", linksToRender);
 
   return (
     <div className={styles.linksList}>
