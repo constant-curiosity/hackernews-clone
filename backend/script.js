@@ -26,4 +26,4 @@ main()
     await prisma.$disconnect();
   });
 
-function bob() {}
+function TextDecoderStream() {}
