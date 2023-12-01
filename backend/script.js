@@ -25,5 +25,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
-function TextDecoderStream() {}
