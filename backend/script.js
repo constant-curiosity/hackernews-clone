@@ -25,3 +25,5 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
+function bob() {}
