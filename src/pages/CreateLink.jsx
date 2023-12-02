@@ -21,13 +21,14 @@ const CreateLink = () => {
     resolver: zodResolver(postSchema),
   });
   const handlePostSubmission = async (postData) => {
-    onPostSubmitHandler({
+    await onPostSubmitHandler({
       postData,
       executeMutation,
       navigate,
       reset,
     });
   };
+
   return (
     <form onSubmit={handleSubmit(handlePostSubmission)}>
       <div className={styles.inputContainer}>

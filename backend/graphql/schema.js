@@ -30,12 +30,11 @@ export const typeDefs = `#graphql
   }
   type Link {
     id: ID!
+    createdAt: String!
     description: String!
     url: String!
     postedBy: User
     votes: [Vote!]!
-    createdAt: String!
-   
   }
   type AuthPayload {
   token: String

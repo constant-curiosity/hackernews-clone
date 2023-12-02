@@ -7,6 +7,12 @@ const getCookie = (name) => {
   if (parts.length === 2) return parts.pop().split(";").shift();
 };
 
+const storage = {
+  getItem: (name) => JSON.parse(sessionStorage.getItem(name)),
+  setItem: (name, value) => sessionStorage.setItem(name, JSON.stringify(value)),
+  removeItem: (name) => sessionStorage.removeItem(name),
+};
+
 const useisLoggedInStore = create(
   persist(
     (set) => ({
@@ -14,14 +20,14 @@ const useisLoggedInStore = create(
       setIsLoggedInGlobal: (isUserLoggedInGlobal) => {
         if (!isUserLoggedInGlobal) {
           document.cookie =
-            "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;";
         }
         set({ isLoggedInGlobal: isUserLoggedInGlobal });
       },
     }),
     {
       name: "login-storage",
-      getStorage: () => sessionStorage,
+      storage: storage,
     }
   )
 );

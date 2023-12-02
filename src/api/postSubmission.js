@@ -5,7 +5,7 @@ export const onPostSubmitHandler = async ({
   reset,
 }) => {
   const response = await executeMutation(postData);
-  console.log(response);
+
   navigate("/");
 };
 

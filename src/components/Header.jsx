@@ -6,7 +6,6 @@ import useisLoggedInStore from "../store/isLoggedIn";
 
 const Header = () => {
   const { isLoggedInGlobal, setIsLoggedInGlobal } = useisLoggedInStore();
-  console.log("isLoggedInGlobal", isLoggedInGlobal);
   const [, logout] = useMutation(LOGOUT_MUTATION);
   const navigate = useNavigate();
 

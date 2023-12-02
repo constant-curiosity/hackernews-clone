@@ -1,16 +1,55 @@
-import styles from "./link.module.css";
 import { timeDifferenceForDate } from "../utils/postDate";
+import styles from "./link.module.css";
+import VOTE_MUTATION from "../graphql/mutation/vote/vote";
+import { useMutation } from "urql";
+import useisLoggedInStore from "../store/isLoggedIn";
+import { useNavigate } from "react-router-dom";
 
-const upvote = () => {
-  console.log("voted");
-};
+const Link = ({
+  createdAt,
+  description,
+  index,
+  linkId,
+  url,
+  username,
+  votes,
+}) => {
+  const [, executeVoteMutation] = useMutation(VOTE_MUTATION);
+  const { isLoggedInGlobal } = useisLoggedInStore();
+  const navigate = useNavigate();
 
-const Link = ({ description, url, username, createdAt, votes, index }) => {
+  const upVote = () => {
+    if (!isLoggedInGlobal) {
+      navigate("/login");
+      return;
+    }
+
+    executeVoteMutation(
+      { linkId: linkId },
+      (voteMutationResult, currectFeedCache) => {
+        if (voteMutationResult.vote) {
+          return {
+            ...currectFeedCache,
+            links: currectFeedCache.links.map((link) =>
+              link.id === linkId ? { ...link, votes: link.votes + 1 } : link
+            ),
+          };
+        }
+        console.log(currectFeedCache);
+        return currectFeedCache;
+      }
+    );
+  };
+
   return (
     <div className="flex mt2 items-start">
       <div className="flex items-center">
         <span className="gray">{index + 1}.</span>
-        <div className="ml1 gray f11" onClick={upvote}>
+        <div
+          className="ml1 gray f11"
+          style={{ cursor: "pointer" }}
+          onClick={upVote}
+        >
           ▲
         </div>
       </div>
