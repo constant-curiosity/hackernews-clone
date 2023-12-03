@@ -1,3 +1,5 @@
+import useUserIdStore from "../store/userId";
+
 export const onFormSubmitHandler = async ({
   isLogin,
   data,
@@ -9,6 +11,7 @@ export const onFormSubmitHandler = async ({
 }) => {
   try {
     const response = await signupOrLoginMutation(data);
+    console.log("Response:", response);
     if (!response.data) {
       navigate("/error", { state: { errorMessage: "Something went wrong" } });
       return;
@@ -29,6 +32,8 @@ export const onFormSubmitHandler = async ({
       reset();
       setIsLogin(true);
     } else if (operationData.isLoggedIn) {
+      const userId = operationData.authPayload.user.id; //userIdStore
+      useUserIdStore.getState().setUserId(userId); //userIdStore
       reset();
       setIsLoggedInGlobal(true);
       navigate("/");

@@ -5,6 +5,7 @@ export const LOGIN_MUTATION = gql`
     login(email: $email, password: $password) {
       authPayload {
         user {
+          id
           name
           email
         }
@@ -19,3 +20,5 @@ export const LOGIN_MUTATION = gql`
 
 export default LOGIN_MUTATION;
 //Location: SignupLogin.jsx
+
+//Added id to user  if error

@@ -13,7 +13,6 @@ const LinkList = () => {
   if (data.feed.message !== "") return <div>{data.feed.message}</div>;
 
   const linksToRender = data.feed.links;
-
   return (
     <div className={styles.linksList}>
       {linksToRender.map((link, index) => (

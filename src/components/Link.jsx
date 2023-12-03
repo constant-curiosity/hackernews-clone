@@ -4,6 +4,7 @@ import VOTE_MUTATION from "../graphql/mutation/vote/vote";
 import { useMutation } from "urql";
 import useisLoggedInStore from "../store/isLoggedIn";
 import { useNavigate } from "react-router-dom";
+import useUserIdStore from "../store/userId";
 
 const Link = ({
   createdAt,
@@ -17,7 +18,8 @@ const Link = ({
   const [, executeVoteMutation] = useMutation(VOTE_MUTATION);
   const { isLoggedInGlobal } = useisLoggedInStore();
   const navigate = useNavigate();
-
+  const userId = useUserIdStore((state) => state.userId);
+  console.log(userId);
   const upVote = () => {
     if (!isLoggedInGlobal) {
       navigate("/login");
