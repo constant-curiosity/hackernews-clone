@@ -23,22 +23,7 @@ const Link = ({
       navigate("/login");
       return;
     }
-
-    executeVoteMutation(
-      { linkId: linkId },
-      (voteMutationResult, currectFeedCache) => {
-        if (voteMutationResult.vote) {
-          return {
-            ...currectFeedCache,
-            links: currectFeedCache.links.map((link) =>
-              link.id === linkId ? { ...link, votes: link.votes + 1 } : link
-            ),
-          };
-        }
-        console.log(currectFeedCache);
-        return currectFeedCache;
-      }
-    );
+    executeVoteMutation({ linkId: linkId });
   };
 
   return (

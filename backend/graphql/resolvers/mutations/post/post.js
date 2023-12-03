@@ -31,3 +31,4 @@ export default post;
 
 //This is supposed to return a link do not buddle a error array with this
 //create a Union type to handle this
+//postSubmission.js frontend

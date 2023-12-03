@@ -1,12 +1,13 @@
-import { NavLink, useNavigate, Link } from "react-router-dom";
+import { NavLink, useNavigate, useLocation, Link } from "react-router-dom";
 import { useMutation } from "urql";
 import LOGOUT_MUTATION from "../graphql/mutation/authMutations/logout";
 import styles from "./header.module.css";
 import useisLoggedInStore from "../store/isLoggedIn";
 
 const Header = () => {
-  const { isLoggedInGlobal, setIsLoggedInGlobal } = useisLoggedInStore();
   const [, logout] = useMutation(LOGOUT_MUTATION);
+  const { isLoggedInGlobal, setIsLoggedInGlobal } = useisLoggedInStore();
+  const location = useLocation();
   const navigate = useNavigate();
 
   //Maybe move into another directory
@@ -34,19 +35,19 @@ const Header = () => {
         <Link className={styles.siteTitle}>
           <div>Hacker News</div>
         </Link>
-        <NavLink
+        {/* <NavLink
           to="/"
           className={({ isActive }) =>
             isActive ? styles.activeLink : styles.link
           }
         >
           new
-        </NavLink>
+        </NavLink> */}
         <div className={styles.separator}>|</div>
         <NavLink
           to={submitLink}
-          className={({ isActive }) =>
-            isActive ? styles.activeLink : styles.link
+          className={
+            location.pathname === "/create" ? styles.activeLink : styles.link
           }
         >
           submit
