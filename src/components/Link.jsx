@@ -21,7 +21,6 @@ const Link = ({
   const navigate = useNavigate();
   const userId = userIdStore((state) => state.userId);
 
-  // console.log("userVotes", userVotes);
   const upVote = () => {
     if (!isLoggedInGlobal) {
       navigate("/login");
@@ -31,7 +30,6 @@ const Link = ({
   };
 
   const hasVoted = userVotes.some((vote) => vote.user.id === userId);
-  // console.log("hasVoted", hasVoted);
 
   const isVotesIconStyle = hasVoted ? styles.votedStyle : styles.notVotedStyle;
 

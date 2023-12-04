@@ -62,6 +62,15 @@ const Header = () => {
         >
           submit
         </NavLink>
+        <div className={styles.separator}>|</div>
+        <NavLink
+          to="/search"
+          className={({ isActive }) =>
+            isActive ? styles.activeLink : styles.link
+          }
+        >
+          search
+        </NavLink>
       </div>
       <div className={styles.flexFixed}>
         <div
