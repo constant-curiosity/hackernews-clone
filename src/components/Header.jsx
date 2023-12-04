@@ -2,25 +2,35 @@ import { NavLink, useNavigate, useLocation, Link } from "react-router-dom";
 import { useMutation } from "urql";
 import LOGOUT_MUTATION from "../graphql/mutation/authMutations/logout";
 import styles from "./header.module.css";
-import useisLoggedInStore from "../store/isLoggedIn";
+import userIsLoggedInStore from "../store/isLoggedIn";
+import userIdStore from "../store/userId";
 
 const Header = () => {
   const [, logout] = useMutation(LOGOUT_MUTATION);
-  const { isLoggedInGlobal, setIsLoggedInGlobal } = useisLoggedInStore();
+  const { isLoggedInGlobal, setIsLoggedInGlobal } = userIsLoggedInStore();
   const location = useLocation();
   const navigate = useNavigate();
 
   //Maybe move into another directory
   const logOutHandler = async () => {
     try {
-      await logout();
-      setIsLoggedInGlobal(false);
-      navigate("/");
+      const response = await logout();
+      if (response && response.data && response.data.logout) {
+        userIdStore.getState().clearUserId();
+        setIsLoggedInGlobal(false);
+        navigate("/");
+      } else {
+        navigate("/error", {
+          state: {
+            errorMessage: "An error occurred during logout. Please try again.",
+          },
+        });
+      }
     } catch (error) {
+      console.log(error);
       navigate("/error", {
         state: {
-          errorMessage:
-            err.message || "An error occurred during logout. Please try again.",
+          errorMessage: "An error occurred during logout. Please try again.",
         },
       });
     }

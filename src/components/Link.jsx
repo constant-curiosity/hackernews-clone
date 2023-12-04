@@ -2,9 +2,9 @@ import { timeDifferenceForDate } from "../utils/postDate";
 import styles from "./link.module.css";
 import VOTE_MUTATION from "../graphql/mutation/vote/vote";
 import { useMutation } from "urql";
-import useisLoggedInStore from "../store/isLoggedIn";
+import userIsLoggedInStore from "../store/isLoggedIn";
 import { useNavigate } from "react-router-dom";
-import useUserIdStore from "../store/userId";
+import userIdStore from "../store/userId";
 
 const Link = ({
   createdAt,
@@ -13,13 +13,15 @@ const Link = ({
   linkId,
   url,
   username,
+  userVotes,
   votes,
 }) => {
   const [, executeVoteMutation] = useMutation(VOTE_MUTATION);
-  const { isLoggedInGlobal } = useisLoggedInStore();
+  const { isLoggedInGlobal } = userIsLoggedInStore();
   const navigate = useNavigate();
-  const userId = useUserIdStore((state) => state.userId);
-  console.log(userId);
+  const userId = userIdStore((state) => state.userId);
+
+  // console.log("userVotes", userVotes);
   const upVote = () => {
     if (!isLoggedInGlobal) {
       navigate("/login");
@@ -28,12 +30,18 @@ const Link = ({
     executeVoteMutation({ linkId: linkId });
   };
 
+  const hasVoted = userVotes.some((vote) => vote.user.id === userId);
+  // console.log("hasVoted", hasVoted);
+
+  const isVotesIconStyle = hasVoted ? styles.votedStyle : styles.notVotedStyle;
+
   return (
     <div className="flex mt2 items-start">
       <div className="flex items-center">
         <span className="gray">{index + 1}.</span>
         <div
-          className="ml1 gray f11"
+          // className="ml1 gray f11"
+          className={`${isVotesIconStyle}`}
           style={{ cursor: "pointer" }}
           onClick={upVote}
         >

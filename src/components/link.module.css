@@ -1,3 +1,8 @@
+.description {
+  margin-right: 5px;
+  color: #000; /* Black text for the description */
+}
+
 .linkItem {
   font-family: Verdana, sans-serif;
   font-size: 10pt;
@@ -6,9 +11,16 @@
   margin-bottom: 5px; /* Space between link items */
 }
 
-.description {
-  margin-right: 5px;
-  color: #000; /* Black text for the description */
+.notVotedStyle {
+  margin-left: 0.25rem;
+  color: darkgrey;
+  font-size: 12px;
+}
+
+.votedStyle {
+  margin-left: 0.25rem;
+  color: black;
+  font-size: 12px;
 }
 
 .votesAndDate {

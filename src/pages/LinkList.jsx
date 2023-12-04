@@ -23,6 +23,7 @@ const LinkList = () => {
           url={link.url}
           createdAt={link.createdAt}
           votes={link.votes.length}
+          userVotes={link.votes}
           index={index}
           //This is here due to a random error that needs to be looked into
           // username={link.postedBy ? link.postedBy.name : "Anonymous"}

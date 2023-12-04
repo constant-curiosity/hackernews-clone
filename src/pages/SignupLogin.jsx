@@ -10,10 +10,10 @@ import LOGIN_MUTATION from "../graphql/mutation/authMutations/login";
 import onFormSubmitHandler from "../api/authLoginSignupSubmission";
 import SIGNUP_MUTATION from "../graphql/mutation/authMutations/signup";
 import styles from "./signuplogin.module.css";
-import useisLoggedInStore from "../store/isLoggedIn";
+import userIsLoggedInStore from "../store/isLoggedIn";
 
 const SignupLogin = () => {
-  const { setIsLoggedInGlobal } = useisLoggedInStore();
+  const { setIsLoggedInGlobal } = userIsLoggedInStore();
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
   const [, signupOrLoginMutation] = useMutation(

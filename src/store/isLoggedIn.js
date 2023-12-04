@@ -13,7 +13,7 @@ const storage = {
   removeItem: (name) => sessionStorage.removeItem(name),
 };
 
-const useisLoggedInStore = create(
+const userIsLoggedInStore = create(
   persist(
     (set) => ({
       isLoggedInGlobal: !!getCookie("authToken"),
@@ -32,4 +32,4 @@ const useisLoggedInStore = create(
   )
 );
 
-export default useisLoggedInStore;
+export default userIsLoggedInStore;
