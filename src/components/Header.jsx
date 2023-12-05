@@ -1,9 +1,10 @@
 import { NavLink, useNavigate, useLocation, Link } from "react-router-dom";
 import { useMutation } from "urql";
 import LOGOUT_MUTATION from "../graphql/mutation/authMutations/logout";
+import SeparatorPipeHeader from "./SeparatorPipeHeader";
 import styles from "./header.module.css";
-import userIsLoggedInStore from "../store/isLoggedIn";
 import userIdStore from "../store/userId";
+import userIsLoggedInStore from "../store/isLoggedIn";
 
 const Header = () => {
   const [, logout] = useMutation(LOGOUT_MUTATION);
@@ -53,7 +54,7 @@ const Header = () => {
         >
           new
         </NavLink> */}
-        <div className={styles.separator}>|</div>
+        <SeparatorPipeHeader />
         <NavLink
           to={submitLink}
           className={
@@ -62,7 +63,7 @@ const Header = () => {
         >
           submit
         </NavLink>
-        <div className={styles.separator}>|</div>
+        <SeparatorPipeHeader />
         <NavLink
           to="/search"
           className={({ isActive }) =>

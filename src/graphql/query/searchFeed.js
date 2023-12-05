@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
-export const FEED_QUERY = gql`
-  query Feed {
-    feed {
+export const FEED_SEARCH_QUERY = gql`
+  query Feed($filter: String!) {
+    feed(filter: $filter) {
       links {
         id
         createdAt
@@ -27,5 +27,6 @@ export const FEED_QUERY = gql`
   }
 `;
 
-export default FEED_QUERY;
-//Location: LinkList.jsx
+export default FEED_SEARCH_QUERY;
+//Location SearchFeed.jsx
+// FeedSearchQuery

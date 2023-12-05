@@ -12,7 +12,7 @@ export const feed = async (_, args, contextValue) => {
       where,
       skip: args.skip,
       take: args.take,
-      orderBy: args.orderBy,
+      // orderBy: args.orderBy,
       orderBy: args.orderBy || { createdAt: "desc" },
     });
 
@@ -23,8 +23,7 @@ export const feed = async (_, args, contextValue) => {
 
     const count = await contextValue.prisma.link.count({ where });
 
-    let message = "";
-    links.length === 0 ? (message = "No links found. Add a link :-)") : "";
+    let message = links.length === 0 ? "No links found." : "";
 
     return { links, count, message, errors: [] };
   } catch (error) {

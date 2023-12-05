@@ -1,0 +1,25 @@
+/* .errorMessage {
+  margin-top: 2rem;
+} */
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.inputWidth {
+  display: flex;
+  width: 100%;
+  max-width: 500px;
+}
+
+.marginBottom {
+  margin-bottom: 0.5rem;
+}
+
+@media screen and (max-width: 600px) {
+  .inputWidth {
+    width: 100%;
+  }
+}

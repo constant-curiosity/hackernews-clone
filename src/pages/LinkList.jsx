@@ -17,17 +17,17 @@ const LinkList = () => {
     <div className={styles.linksList}>
       {linksToRender.map((link, index) => (
         <Link
+          // username={link.postedBy ? link.postedBy.name : "Anonymous"}
+          //This is here due to a random error that needs to be looked into
+          createdAt={link.createdAt}
+          description={link.description}
+          index={index}
           key={link.id}
           linkId={link.id}
-          description={link.description}
           url={link.url}
-          createdAt={link.createdAt}
-          votes={link.votes.length}
-          userVotes={link.votes}
-          index={index}
-          //This is here due to a random error that needs to be looked into
-          // username={link.postedBy ? link.postedBy.name : "Anonymous"}
           username={link.postedBy.name}
+          userVotes={link.votes}
+          votes={link.votes.length}
         />
       ))}
     </div>
