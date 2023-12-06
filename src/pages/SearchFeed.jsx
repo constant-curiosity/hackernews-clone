@@ -1,5 +1,7 @@
-import { useForm } from "react-hook-form";
 import { useClient } from "urql";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "../components/Button";
 import FEED_SEARCH_QUERY from "../graphql/query/searchFeed";
@@ -7,8 +9,6 @@ import InputField from "../components/InputField";
 import Link from "../components/Link";
 import searchFeedSchema from "../validation/searchFeedValidation";
 import styles from "./searchfeed.module.css";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const SearchFeed = () => {
   const [result, setResult] = useState({ data: null });
@@ -57,9 +57,6 @@ const SearchFeed = () => {
         )}
         <Button type={"submit"} buttonText={"Submit"} />
       </form>
-      {/* {links.length === 0 && (
-        <div className={styles.errorMessage}>{message}</div>
-      )} */}
       {links.map((link, index) => (
         <Link
           // username={link.postedBy ? link.postedBy.name : "Anonymous"}
