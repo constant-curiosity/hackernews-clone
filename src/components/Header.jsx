@@ -56,12 +56,12 @@ const Header = () => {
         </NavLink> */}
         <SeparatorPipeHeader />
         <NavLink
-          to={submitLink}
-          className={
-            location.pathname === "/create" ? styles.activeLink : styles.link
+          to="/top"
+          className={({ isActive }) =>
+            isActive ? styles.activeLink : styles.link
           }
         >
-          submit
+          top
         </NavLink>
         <SeparatorPipeHeader />
         <NavLink
@@ -71,6 +71,15 @@ const Header = () => {
           }
         >
           search
+        </NavLink>
+        <SeparatorPipeHeader />
+        <NavLink
+          to={submitLink}
+          className={
+            location.pathname === "/create" ? styles.activeLink : styles.link
+          }
+        >
+          submit
         </NavLink>
       </div>
       <div className={styles.flexFixed}>

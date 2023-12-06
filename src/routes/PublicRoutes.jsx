@@ -13,6 +13,8 @@ export const publicRoutes = [
     errorElement: <RouterError />,
     children: [
       { index: true, element: <LinkList /> },
+      { path: "/top", element: <LinkList /> },
+      { path: "/new/:page", element: <LinkList /> },
       { path: "/create", element: <CreateLink /> },
       { path: "/error", element: <ServerError /> },
       { path: "/login", element: <SignupLogin /> },
