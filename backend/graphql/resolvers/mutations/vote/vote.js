@@ -1,4 +1,4 @@
-export const vote = async (_, args, contextValue, ____) => {
+const vote = async (_, args, contextValue, ____) => {
   const { userId } = contextValue;
   const vote = await contextValue.prisma.vote.findUnique({
     where: {

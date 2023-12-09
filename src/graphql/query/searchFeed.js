@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-export const FEED_SEARCH_QUERY = gql`
+const FEED_SEARCH_QUERY = gql`
   query Feed($filter: String!) {
     feed(filter: $filter) {
       links {

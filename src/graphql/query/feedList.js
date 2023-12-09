@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-export const FEED_QUERY = gql`
+const FEED_QUERY = gql`
   query Feed($take: Int, $skip: Int, $orderBy: LinkOrderByInput) {
     feed(take: $take, skip: $skip, orderBy: $orderBy) {
       links {

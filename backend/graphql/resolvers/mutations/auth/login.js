@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import validateWithZod from "../../../../validations/validateWithZod.js";
 
-export const login = async (_, args, contextValue, ____) => {
+const login = async (_, args, contextValue, ____) => {
   try {
     validateWithZod(loginValidation, args);
 

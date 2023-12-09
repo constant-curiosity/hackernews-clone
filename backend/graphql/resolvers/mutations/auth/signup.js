@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import validateWithZod from "../../../../validations/validateWithZod.js";
 const APP_SECRET_KEY = process.env.APP_SECRET_KEY;
 
-export const signup = async (_, args, contextValue, ____) => {
+const signup = async (_, args, contextValue, ____) => {
   try {
     validateWithZod(signupValidation, args);
     const existingUser = await contextValue.prisma.user.findUnique({

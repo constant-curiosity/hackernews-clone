@@ -1,4 +1,4 @@
-export const logout = (_, __, contextValue) => {
+const logout = (_, __, contextValue) => {
   try {
     contextValue.res.cookie("authToken", "", {
       expires: new Date(0),

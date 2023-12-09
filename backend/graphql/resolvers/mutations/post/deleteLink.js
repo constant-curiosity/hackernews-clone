@@ -1,4 +1,4 @@
-export const deleteLink = async (_, args, contextValue) => {
+const deleteLink = async (_, args, contextValue) => {
   const { id } = args;
   const { userId } = contextValue; // Not sure if this will be needed
 

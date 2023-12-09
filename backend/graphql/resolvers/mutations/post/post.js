@@ -1,7 +1,7 @@
 import { postValidation } from "../../../../validations/validationSchema.js";
 import validateWithZod from "../../../../validations/validateWithZod.js";
 
-export const post = async (_, args, contextValue, ____) => {
+const post = async (_, args, contextValue, ____) => {
   try {
     validateWithZod(postValidation, args);
     const { userId } = contextValue;
