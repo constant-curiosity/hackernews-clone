@@ -22,6 +22,7 @@ const LinkList = () => {
   );
 
   const [result] = useQuery({ query: FEED_QUERY, variables });
+
   const { data, fetching, error } = result;
 
   const nextPage = useCallback(() => {
@@ -37,17 +38,11 @@ const LinkList = () => {
   }, [page, navigate]);
 
   const linksToRender = useMemo(() => {
-    if (!data || !data.feed) {
+    if (!data || !data.feed || !data.feed.links) {
       return [];
-    } else if (location.pathname.includes("/new")) {
-      return data.feed.links;
-    } else {
-      const rankedLinks = data.feed.links
-        .slice()
-        .sort((l1, l2) => l2.votes.length - l1.votes.length);
-      return rankedLinks;
     }
-  }, [data, location.pathname]);
+    return data.feed.links;
+  }, [data]);
 
   if (fetching) return <div>Fetching</div>;
   if (error) return <div>{error.message}</div>;
