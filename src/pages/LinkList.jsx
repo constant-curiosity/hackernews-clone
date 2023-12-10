@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { useQuery } from "urql";
 import Button from "../components/Button";
 import FEED_QUERY from "../graphql/query/feedList";
@@ -10,6 +10,7 @@ const LinkList = () => {
   const navigate = useNavigate();
   const params = useParams();
   let page = parseInt(params.page, 10) || 1;
+  const pageIndex = (page - 1) * 10;
 
   const variables = useMemo(
     () => ({
@@ -22,7 +23,18 @@ const LinkList = () => {
 
   const [result] = useQuery({ query: FEED_QUERY, variables });
   const { data, fetching, error } = result;
-  const pageIndex = (page - 1) * 10;
+
+  const nextPage = useCallback(() => {
+    if (page <= data.feed.count / 10) {
+      navigate(`/new/${page + 1}`);
+    }
+  }, [page, navigate, data]);
+
+  const previousPage = useCallback(() => {
+    if (page > 1) {
+      navigate(`/new/${page - 1}`);
+    }
+  }, [page, navigate]);
 
   const linksToRender = useMemo(() => {
     if (!data || !data.feed) {
@@ -42,19 +54,6 @@ const LinkList = () => {
   if (data.feed.errors.length > 0) return <div>{data.feed.errors[0]}</div>;
   if (data.feed.message !== "") return <div>{data.feed.message}</div>;
 
-  const nextPage = () => {
-    if (page <= data.feed.count / 10) {
-      navigate(`/new/${page + 1}`);
-    }
-  };
-
-  const previousPage = () => {
-    if (page > 1) {
-      navigate(`/new/${page - 1}`);
-    }
-  };
-
-  // const linksToRender = data.feed.links;
   return (
     <>
       <div className={styles.linksList}>
