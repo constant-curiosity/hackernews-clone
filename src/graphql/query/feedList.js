@@ -23,6 +23,7 @@ const FEED_QUERY = gql`
         message
       }
       message
+      count
     }
   }
 `;

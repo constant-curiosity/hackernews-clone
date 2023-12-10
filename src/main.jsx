@@ -12,13 +12,27 @@ const router = createBrowserRouter([...publicRoutes]);
 const cache = cacheExchange({
   updates: {
     Mutation: {
-      post: (result, __, cache) => {
-        cache.updateQuery({ query: FEED_QUERY }, (data) => {
-          return {
-            ...data,
-            feed: { ...data.feed, links: [result.post, ...data.feed.links] },
-          };
-        });
+      post: (result, args, cache) => {
+        cache.updateQuery(
+          {
+            query: FEED_QUERY,
+            variables: { skip: 0, take: 10, orderBy: { createdAt: "desc" } },
+          },
+          (data) => {
+            if (!data || !data.feed) {
+              return data;
+            }
+            const newLink = result.post;
+            let updatedLinks = [newLink, ...data.feed.links];
+            if (updatedLinks.length > 10) {
+              updatedLinks = updatedLinks.slice(0, 10);
+            }
+            return {
+              ...data,
+              feed: { ...data.feed, links: updatedLinks },
+            };
+          }
+        );
       },
     },
   },
@@ -39,3 +53,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </Provider>
   </React.StrictMode>
 );
+
+//Even though "args" isn't being used without it an error will be thrown.
+//Even though you might not be using args directly in your function,
+//urql or other internal mechanisms might rely on the function signature being a certain way.
+//Changing the number of parameters could disrupt this.

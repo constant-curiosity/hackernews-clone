@@ -1,3 +1,4 @@
+import { Navigate } from "react-router-dom";
 import CreateLink from "../pages/CreateLink";
 import LinkList from "../pages/LinkList";
 import RootLayout from "../layout/RootLayout";
@@ -12,7 +13,7 @@ export const publicRoutes = [
     element: <RootLayout />,
     errorElement: <RouterError />,
     children: [
-      { index: true, element: <LinkList /> },
+      { index: true, element: <Navigate to="/new/1" replace /> },
       { path: "/top", element: <LinkList /> },
       { path: "/new/:page", element: <LinkList /> },
       { path: "/create", element: <CreateLink /> },
@@ -22,3 +23,7 @@ export const publicRoutes = [
     ],
   },
 ];
+
+//"replace" due to how we are removing "/" from the history stack,
+// so it removes "/" and it is replaced with "/new/1"
+// this is a workaround to make sure that we don't have "/" in the history stack

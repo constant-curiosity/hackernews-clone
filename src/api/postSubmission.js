@@ -2,7 +2,6 @@ export const onPostSubmitHandler = async ({
   postData,
   executeMutation,
   navigate,
-  reset,
 }) => {
   const response = await executeMutation(postData);
 
