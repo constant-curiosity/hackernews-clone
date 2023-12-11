@@ -71,3 +71,4 @@ type LoginResponse {
 `;
 
 //Break this into smaller files by type.
+//Mover into schema directory

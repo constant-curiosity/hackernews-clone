@@ -15,3 +15,4 @@ const deleteLink = async (_, args, contextValue) => {
 export default deleteLink;
 
 //1. The is a foreign key constraint on the votes table that prevents deleting a link that has votes.
+// Haven't added, future implementation

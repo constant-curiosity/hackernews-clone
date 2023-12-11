@@ -9,10 +9,3 @@ export default {
 };
 
 // This is part of : User type
-
-// type User {
-//   id: ID!
-//   name: String!
-//   email: String!
-//   links: [Link!]!
-// }
