@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
-const VOTE_MUTATION = gql`
-  mutation VoteMutation($linkId: ID!) {
-    vote(linkId: $linkId) {
+const NEW_VOTE_SUBSCRIPTION = gql`
+  subscription {
+    newVote {
       link {
         id
         votes {
@@ -16,5 +16,5 @@ const VOTE_MUTATION = gql`
   }
 `;
 
-export default VOTE_MUTATION;
-//Location: LinkList.jsx
+export default NEW_VOTE_SUBSCRIPTION;
+//Location : LinkList.jsx

@@ -24,22 +24,22 @@
 }
 
 .votesAndDate {
-  font-size: 8pt; /* Smaller font size for the votes and date */
-  color: #828282; /* Grey text for the votes and date */
+  font-size: 8pt;
+  color: #828282;
   margin-right: 5px;
 }
 
 .url {
-  font-size: 8pt; /* Smaller font size for the URL */
-  color: #828282; /* Grey text for the URL */
-  text-decoration: none; /* No underline for the link */
+  font-size: 8pt;
+  color: #828282;
+  text-decoration: none;
   margin-right: 5px;
 }
 
 .url:hover {
-  text-decoration: underline; /* Underline on hover for the link */
+  text-decoration: underline;
 }
 
 .username {
-  font-size: 8pt; /* Smaller font size for the username */
+  font-size: 8pt;
 }

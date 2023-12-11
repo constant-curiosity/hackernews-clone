@@ -32,8 +32,8 @@ export const onFormSubmitHandler = async ({
       reset();
       setIsLogin(true);
     } else if (operationData.isLoggedIn) {
-      const userId = operationData.authPayload.user.id; //userIdStore
-      userIdStore.getState().setUserId(userId); //userIdStore
+      const userId = operationData.authPayload.user.id;
+      userIdStore.getState().setUserId(userId);
       reset();
       setIsLoggedInGlobal(true);
       navigate("/");

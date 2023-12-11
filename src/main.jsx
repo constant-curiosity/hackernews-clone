@@ -1,6 +1,7 @@
 import "./styles/index.css";
 import { cacheExchange } from "@urql/exchange-graphcache";
-import { Client, fetchExchange, Provider } from "urql";
+import { Client, fetchExchange, Provider, subscriptionExchange } from "urql";
+import { createClient as createWSClient } from "graphql-ws";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { publicRoutes } from "./routes/PublicRoutes";
 import React from "react";
@@ -35,12 +36,53 @@ const cache = cacheExchange({
         );
       },
     },
+    Subscription: {
+      newLink: (result, args, cache) => {
+        cache.updateQuery(
+          {
+            query: FEED_QUERY,
+            variables: { skip: 0, take: 10, orderBy: { createdAt: "desc" } },
+          },
+          (data) => {
+            if (!data || !data.feed) {
+              return data;
+            }
+            const newLink = result.newLink;
+            let updatedLinks = [newLink, ...data.feed.links];
+            if (updatedLinks.length > 10) {
+              updatedLinks = updatedLinks.slice(0, 10);
+            }
+            return {
+              ...data,
+              feed: { ...data.feed, links: updatedLinks },
+            };
+          }
+        );
+      },
+    },
   },
+});
+
+const wsClient = createWSClient({
+  url: "ws://localhost:4000/graphql",
 });
 
 const client = new Client({
   url: "http://localhost:4000/graphql",
-  exchanges: [cache, fetchExchange],
+  exchanges: [
+    cache,
+    fetchExchange,
+    subscriptionExchange({
+      forwardSubscription(operation) {
+        return {
+          subscribe(sink) {
+            const unsubscribe = wsClient.subscribe(operation, sink);
+            return { unsubscribe };
+          },
+        };
+      },
+    }),
+  ],
   fetchOptions: {
     credentials: "include",
   },

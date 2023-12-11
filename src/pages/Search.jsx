@@ -1,6 +1,3 @@
-// import { useQuery } from 'urql'
-// import gql from 'graphql-tag'
-// import Link from "./Link";
 import { useState, useCallback } from "react";
 
 const Search = () => {

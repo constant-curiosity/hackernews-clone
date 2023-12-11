@@ -1,9 +1,11 @@
-import { useNavigate, useParams } from "react-router-dom";
 import { useMemo, useCallback } from "react";
-import { useQuery } from "urql";
+import { useNavigate, useParams } from "react-router-dom";
+import { useQuery, useSubscription } from "urql";
 import Button from "../components/Button";
 import FEED_QUERY from "../graphql/query/feedList";
 import Link from "../components/Link";
+import NEW_VOTE_SUBSCRIPTION from "../graphql/subscription/votes";
+import NEW_LINKS_SUBSCRIPTION from "../graphql/subscription/links";
 import styles from "./linklist.module.css";
 
 const LinkList = () => {
@@ -22,6 +24,8 @@ const LinkList = () => {
   );
 
   const [result] = useQuery({ query: FEED_QUERY, variables });
+  useSubscription({ query: NEW_VOTE_SUBSCRIPTION });
+  useSubscription({ query: NEW_LINKS_SUBSCRIPTION });
 
   const { data, fetching, error } = result;
 

@@ -12,7 +12,6 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  //Maybe move into another directory
   const logOutHandler = async () => {
     try {
       const response = await logout();
@@ -46,14 +45,6 @@ const Header = () => {
         <Link className={styles.siteTitle}>
           <div>Hacker News</div>
         </Link>
-        {/* <NavLink
-          to="/"
-          className={({ isActive }) =>
-            isActive ? styles.activeLink : styles.link
-          }
-        >
-          new
-        </NavLink> */}
         <SeparatorPipeHeader />
         <NavLink
           to="/top"
